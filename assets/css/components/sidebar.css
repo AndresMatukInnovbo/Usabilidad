@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Índice lateral / panel desplegable (drawer)
+   ≥ 68rem: columna fija junto al contenido.
+   < 68rem: panel fuera de pantalla que se abre con el botón "Índice".
+   Estado: .is-open (lo pone assets/js/shell/drawer.js).
+   ========================================================================== */
+
+/* Bloquea el scroll de fondo mientras el panel está abierto */
+body.has-open-drawer {
+  overflow: hidden;
+}
+
+.sidebar {
+  position: sticky;
+  top: calc(var(--safe-top) + var(--header-h));
+  align-self: start;
+  max-height: calc(100vh - var(--header-h));
+  overflow: auto;
+  padding-block: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overscroll-behavior: contain;
+}
+
+.drawer-top {
+  display: none;
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim);
+  z-index: 35;
+}
+
+@media (max-width: 68rem) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(22rem, 88vw);
+    max-height: none;
+    z-index: 40;
+    background: var(--surface);
+    border-right: 1px solid var(--rule);
+    box-shadow: var(--shadow);
+    padding:
+      calc(var(--safe-top) + 1rem)
+      1.25rem
+      calc(var(--safe-bottom) + 1.5rem)
+      max(1.25rem, env(safe-area-inset-left, 0px));
+    visibility: hidden;
+    transform: translateX(-105%);
+    transition: transform .22s ease, visibility 0s linear .22s;
+  }
+
+  .sidebar.is-open {
+    visibility: visible;
+    transform: none;
+    transition: transform .22s ease, visibility 0s;
+  }
+
+  .drawer-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}

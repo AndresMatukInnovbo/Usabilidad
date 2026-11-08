@@ -1,0 +1,61 @@
+/* ==========================================================================
+   Usabilidad para profesionales de la información — hoja de estilos principal
+   --------------------------------------------------------------------------
+   Arquitectura (inspirada en ITCSS) con capas de cascada (@layer):
+
+     reset       → normaliza el navegador; sus !important ganan a todo.
+     settings    → design tokens (colores, tipografía, espaciado, temas).
+     base        → elementos HTML sin clase y tipografía compartida.
+     layout      → estructura de página y ritmo vertical de los capítulos.
+     components  → bloques de interfaz autocontenidos (un archivo por bloque).
+     utilities   → ayudas de una sola responsabilidad; ganan a los componentes.
+
+   El orden de las capas, y no la especificidad, decide qué regla gana.
+   Así se evita la guerra de !important y de selectores largos.
+
+   Producción: estos @import se descargan en paralelo. Si se quiere un único
+   archivo, se puede empaquetar sin cambiar el código, p. ej.:
+     npx lightningcss-cli --bundle --minify assets/css/main.css -o dist/site.css
+   ========================================================================== */
+
+@layer reset, settings, base, layout, components, utilities;
+
+/* Reset y tokens */
+@import url("base/reset.css") layer(reset);
+@import url("settings/tokens.css") layer(settings);
+
+/* Base */
+@import url("base/elements.css") layer(base);
+@import url("base/typography.css") layer(base);
+
+/* Layout */
+@import url("layout/page.css") layer(layout);
+@import url("layout/chapter.css") layer(layout);
+
+/* Componentes: estructura del sitio */
+@import url("components/buttons.css") layer(components);
+@import url("components/skip-link.css") layer(components);
+@import url("components/site-header.css") layer(components);
+@import url("components/sidebar.css") layer(components);
+@import url("components/search.css") layer(components);
+@import url("components/toc.css") layer(components);
+@import url("components/reading-tools.css") layer(components);
+@import url("components/site-footer.css") layer(components);
+@import url("components/floating.css") layer(components);
+
+/* Componentes: contenido */
+@import url("components/hero.css") layer(components);
+@import url("components/index-card.css") layer(components);
+@import url("components/definitions.css") layer(components);
+@import url("components/tiles.css") layer(components);
+@import url("components/tables.css") layer(components);
+@import url("components/filters.css") layer(components);
+@import url("components/diagrams.css") layer(components);
+@import url("components/lists.css") layer(components);
+@import url("components/chart.css") layer(components);
+@import url("components/sus-calculator.css") layer(components);
+@import url("components/persona.css") layer(components);
+@import url("components/references.css") layer(components);
+
+/* Utilidades */
+@import url("utilities/helpers.css") layer(utilities);

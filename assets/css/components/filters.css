@@ -1,0 +1,17 @@
+/* ==========================================================================
+   Barra de filtros (chips + contador)
+   Comportamiento en assets/js/features/methods-filter.js.
+   ========================================================================== */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+}
+
+.count {
+  font-size: .875rem;
+  color: var(--ink-2);
+  font-weight: 700;
+}

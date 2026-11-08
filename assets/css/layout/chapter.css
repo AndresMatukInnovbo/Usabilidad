@@ -1,0 +1,52 @@
+/* ==========================================================================
+   Capítulo (sección numerada)
+   Define el ritmo vertical del contenido ("flow"): los hijos directos no
+   llevan margen propio; el espacio lo pone el contenedor.
+   Al estar en la capa layout, cualquier componente puede ajustarlo sin
+   necesitar !important.
+   ========================================================================== */
+
+.chapter {
+  padding-block: 3rem;
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: calc(var(--header-h) + .75rem);
+}
+
+.chapter > * {
+  margin-block: 0;
+}
+
+.chapter > * + * {
+  margin-top: 1rem;
+}
+
+/* Bloques de texto: ancho de lectura cómodo */
+.chapter > :is(p, ul, ol, dl, h2, h3, aside, .persona) {
+  max-width: var(--measure);
+}
+
+.chapter > .eyebrow + h2 {
+  margin-top: .4rem;
+}
+
+.chapter > h2 + * {
+  margin-top: 1.5rem;
+}
+
+.chapter > h3 {
+  margin-top: 2.6rem;
+}
+
+/* Bloques anchos: tablas, diagramas, calculadora */
+.chapter > :is(figure, .table-wrap, .tiles, .sus-wrap, .filters) {
+  margin-top: 1.4rem;
+}
+
+.chapter ul,
+.chapter ol {
+  padding-left: 1.4rem;
+}
+
+.chapter li + li {
+  margin-top: .4rem;
+}

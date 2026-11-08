@@ -1,0 +1,95 @@
+/* ==========================================================================
+   Botones
+   .icon-btn → botón de herramienta (cabecera, índice, tamaño de letra)
+   .btn      → llamada a la acción; modificador .ghost para la secundaria
+   .chip     → botón de filtro con estado (aria-pressed)
+   ========================================================================== */
+
+/* --- Botón de herramienta --- */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  min-width: var(--tap);
+  min-height: var(--tap);
+  padding: 0 .6rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: .875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background: var(--surface-2);
+}
+
+.icon-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.icon-btn svg {
+  flex: none;
+}
+
+/* --- Llamada a la acción --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: var(--tap);
+  padding: 0 1.1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: inherit;
+  font-weight: 700;
+  font-size: .9375rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  text-decoration: none;
+  filter: brightness(1.08);
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--accent);
+}
+
+.btn.ghost:hover {
+  background: var(--accent-soft);
+  filter: none;
+}
+
+/* --- Chip de filtro --- */
+.chip {
+  min-height: var(--tap);
+  padding: 0 1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: .9375rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chip:hover {
+  background: var(--surface-2);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}

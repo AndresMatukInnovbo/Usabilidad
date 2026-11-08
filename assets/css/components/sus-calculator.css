@@ -1,0 +1,244 @@
+/* ==========================================================================
+   Calculadora SUS
+   Formulario Likert + panel de resultado con medidor.
+   Los valores dinámicos llegan como propiedades CSS desde
+   assets/js/features/sus-calculator.js:
+     --sus-value  → puntuación (0–100) en .gauge
+     data-tone    → ok | warn | bad | pending en .verdict
+   ========================================================================== */
+
+.sus-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 15rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* --- Formulario --- */
+.sus {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.sus-scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 .25rem;
+  font-family: var(--f-type);
+  font-size: .8125rem;
+  color: var(--ink-2);
+}
+
+.sus-item {
+  min-width: 0;
+  margin: 0;
+  padding: .65rem .8rem .75rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.sus-item legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: .5rem;
+  font-size: .9688rem;
+  line-height: 1.4;
+}
+
+.sus-item legend .qn {
+  font-family: var(--f-type);
+  font-weight: 700;
+  color: var(--accent);
+  margin-right: .35rem;
+}
+
+/* --- Escala 1–5 (radios accesibles con aspecto de botón) --- */
+.likert {
+  clear: both;
+  position: relative;
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+}
+
+.likert input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.likert label {
+  display: inline-grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-family: var(--f-type);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.likert label:hover {
+  border-color: var(--accent);
+}
+
+.likert input:checked + label {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.likert input:focus-visible + label {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- Panel de resultado --- */
+.sus-result {
+  position: sticky;
+  top: calc(var(--safe-top) + var(--header-h) + 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.sus-result .side-label {
+  margin: 0;
+}
+
+.sus-score {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 2.6rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.sus-score .of {
+  font-family: var(--f-body);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ink-2);
+  margin-left: .3rem;
+}
+
+.sus-note {
+  margin: 0;
+  font-size: .8125rem;
+}
+
+/* Veredicto según la banda de puntuación */
+.verdict {
+  margin: 0;
+  padding: .4rem .55rem;
+  border-radius: var(--radius-sm);
+  font-size: .9063rem;
+  font-weight: 700;
+  line-height: 1.35;
+  background: var(--surface-2);
+  color: var(--ink-2);
+}
+
+.verdict[data-tone="ok"] {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+
+.verdict[data-tone="warn"] {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.verdict[data-tone="bad"] {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+
+/* --- Medidor --- */
+.gauge {
+  --sus-value: 0;
+  --sus-average: 68; /* promedio de referencia (Sauro, 2011) */
+
+  position: relative;
+  height: .7rem;
+  margin-top: 1.4rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+}
+
+.gauge-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--sus-value) * 1%);
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+}
+
+.gauge-avg {
+  position: absolute;
+  top: -.35rem;
+  bottom: -.35rem;
+  left: calc(var(--sus-average) * 1%);
+  width: 2px;
+  background: var(--ink);
+  transform: translateX(-1px);
+}
+
+.gauge-avg span {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: .15rem;
+  white-space: nowrap;
+  font-family: var(--f-type);
+  font-size: .6875rem;
+  color: var(--ink-2);
+}
+
+.gauge-scale {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font-family: var(--f-type);
+  font-size: .6875rem;
+  color: var(--ink-2);
+}
+
+.sus-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.sus-actions .btn {
+  font-size: .875rem;
+  padding: 0 .85rem;
+}
+
+@container main (max-width: 44rem) {
+  .sus-wrap {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sus-result {
+    position: static;
+    order: -1;
+  }
+}

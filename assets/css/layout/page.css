@@ -1,0 +1,39 @@
+/* ==========================================================================
+   Estructura de página
+   Rejilla de dos columnas: índice lateral + columna de lectura.
+   Por debajo de 68rem el índice sale de la rejilla (ver sidebar.css).
+   ========================================================================== */
+
+.layout {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  gap: 3rem;
+  padding-left: var(--gutter-left);
+  padding-right: var(--gutter-right);
+}
+
+main {
+  min-width: 0;
+  max-width: var(--content-max);
+  padding-block: 2.25rem 4rem;
+  container-type: inline-size;
+  container-name: main;
+}
+
+/* main recibe el foco del enlace "Saltar al contenido" */
+main:focus {
+  outline: none;
+}
+
+@media (max-width: 68rem) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  main {
+    margin-inline: auto;
+    width: 100%;
+  }
+}

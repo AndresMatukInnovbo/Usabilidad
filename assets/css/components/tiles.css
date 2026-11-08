@@ -1,0 +1,51 @@
+/* ==========================================================================
+   Mosaico de conceptos (tiles)
+   Dos columnas por defecto; .cols-3 para tres. Una sola en contenedores estrechos.
+   ========================================================================== */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+  gap: 1.25rem 1.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+.tiles > li {
+  margin: 0;
+  border-top: 2px solid var(--rule);
+  padding-top: .7rem;
+  min-width: 0;
+}
+
+.tiles > li strong {
+  display: block;
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  margin-bottom: .25rem;
+}
+
+.tiles > li p {
+  margin: 0;
+  font-size: .9688rem;
+}
+
+/* Ejemplo al pie de la tarjeta */
+.tiles .ex {
+  display: block;
+  margin-top: .4rem;
+  font-size: .875rem;
+  color: var(--ink-2);
+}
+
+.cols-3 {
+  --cols: 3;
+}
+
+@container main (max-width: 40rem) {
+  .tiles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

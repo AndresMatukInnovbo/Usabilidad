@@ -1,0 +1,116 @@
+/* ==========================================================================
+   Ficha de biblioteca (index card)
+   Patrón visual compartido: tarjeta con línea roja bajo la cabecera y el
+   agujero inferior de las fichas de catálogo.
+
+   .index-card            → base común
+   .index-card.catalog    → ficha catalográfica de la portada
+   .index-card.ficha      → "Ideas clave" al inicio de cada sección
+   ========================================================================== */
+
+.index-card {
+  --hole-size: .75rem;
+  --hole-offset: .75rem;
+
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+}
+
+/* Agujero de la ficha */
+.index-card::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: var(--hole-offset);
+  width: var(--hole-size);
+  height: var(--hole-size);
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  transform: translateX(-50%);
+}
+
+/* --- Ficha catalográfica --- */
+.catalog {
+  margin: 0;
+  padding: 1rem 1.1rem 2.4rem;
+  font-family: var(--f-type);
+  font-size: .8125rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: 3.6rem minmax(0, 1fr);
+  column-gap: .6rem;
+}
+
+.cat-head {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 3.6rem minmax(0, 1fr);
+  column-gap: .6rem;
+  border-bottom: 1px solid var(--card-rule);
+  padding-bottom: .35rem;
+  margin-bottom: .55rem;
+}
+
+.cat-call {
+  color: var(--ink-2);
+}
+
+.cat-body p {
+  margin: 0 0 .5rem;
+}
+
+.cat-body p.indent {
+  text-indent: 1.2rem;
+}
+
+/* El pie de figura existe para lectores de pantalla, no se muestra */
+.catalog figcaption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+/* --- Ideas clave --- */
+.ficha {
+  --hole-size: .65rem;
+  --hole-offset: .6rem;
+
+  padding: .8rem 1.15rem 2rem;
+}
+
+.ficha-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 .7rem;
+  padding-bottom: .35rem;
+  border-bottom: 1px solid var(--card-rule);
+  font-family: var(--f-type);
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.ficha ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+
+.ficha li + li {
+  margin-top: 0;
+}

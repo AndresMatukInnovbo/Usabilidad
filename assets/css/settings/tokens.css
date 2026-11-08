@@ -1,0 +1,122 @@
+/* ==========================================================================
+   Design tokens
+   Única fuente de verdad para color, tipografía y medidas.
+   Ningún componente debe usar un color o una fuente "a mano".
+
+   Temas:
+   - Por defecto se sigue la preferencia del sistema (prefers-color-scheme).
+   - [data-theme="light" | "dark"] en <html> fuerza un tema (lo pone el
+     botón de tema y lo restaura assets/js/core/boot.js antes de pintar).
+   La paleta oscura aparece dos veces porque CSS no permite compartir un
+   bloque entre una media query y un selector de atributo. Si cambias un
+   valor oscuro, cámbialo en ambos bloques.
+
+   Puntos de corte (las media queries no admiten variables):
+   - 68rem  → el índice lateral pasa a panel desplegable (drawer).
+              Sincronizado con UW.config.drawerQuery en boot.js.
+   - 44rem  → cabecera compacta.
+   ========================================================================== */
+
+:root {
+  /* --- Color: tema claro --- */
+  --bg: #F5F7FA;
+  --surface: #FFFFFF;
+  --surface-2: #E9EDF4;
+  --ink: #131B2A;
+  --ink-2: #47526A;
+  --rule: #D2D8E2;
+  --accent: #28409C;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E1E7F8;
+  --card-rule: #B4262F;
+  --ok: #156B45;
+  --ok-soft: #DDF1E7;
+  --warn: #8A5800;
+  --warn-soft: #FBEFD6;
+  --bad: #B4262F;
+  --bad-soft: #F9E0E1;
+  --mark: #FFE27A;
+  --mark-ink: #131B2A;
+  --shadow: 0 1px 2px rgba(19, 27, 42, .06), 0 6px 20px rgba(19, 27, 42, .07);
+  --scrim: rgba(19, 27, 42, .45);
+
+  /* --- Tipografía --- */
+  --f-display: "Literata", Georgia, "Times New Roman", serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  --f-type: "Courier Prime", "Courier New", ui-monospace, Menlo, Consolas, monospace;
+  --scale: 1; /* lo modifica el control de tamaño de letra */
+
+  /* --- Medidas --- */
+  --header-h: 3.75rem;
+  --measure: 68ch;        /* ancho de lectura cómodo */
+  --page-max: 90rem;
+  --content-max: 50rem;
+  --sidebar-w: 17.5rem;
+  --tap: 2.75rem;         /* objetivo táctil mínimo: 44 px */
+
+  --radius-xs: 2px;
+  --radius-card: 3px;
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-pill: 999px;
+
+  /* --- Áreas seguras (pantallas con muesca) --- */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --gutter-left: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-right: max(16px, env(safe-area-inset-right, 0px));
+
+  color-scheme: light;
+}
+
+/* --- Tema oscuro según el sistema (salvo que se fuerce el claro) --- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E131B;
+    --surface: #151B26;
+    --surface-2: #1D2533;
+    --ink: #E8ECF3;
+    --ink-2: #A7B2C4;
+    --rule: #2B3546;
+    --accent: #A3B4FF;
+    --accent-ink: #0E131B;
+    --accent-soft: #222C4A;
+    --card-rule: #F07A82;
+    --ok: #6CD39F;
+    --ok-soft: #173226;
+    --warn: #F0BE63;
+    --warn-soft: #33270F;
+    --bad: #F48A90;
+    --bad-soft: #3A1A1D;
+    --mark: #5E4B0E;
+    --mark-ink: #FFF4CC;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .35);
+    --scrim: rgba(0, 0, 0, .6);
+    color-scheme: dark;
+  }
+}
+
+/* --- Tema oscuro forzado por el usuario --- */
+:root[data-theme="dark"] {
+  --bg: #0E131B;
+  --surface: #151B26;
+  --surface-2: #1D2533;
+  --ink: #E8ECF3;
+  --ink-2: #A7B2C4;
+  --rule: #2B3546;
+  --accent: #A3B4FF;
+  --accent-ink: #0E131B;
+  --accent-soft: #222C4A;
+  --card-rule: #F07A82;
+  --ok: #6CD39F;
+  --ok-soft: #173226;
+  --warn: #F0BE63;
+  --warn-soft: #33270F;
+  --bad: #F48A90;
+  --bad-soft: #3A1A1D;
+  --mark: #5E4B0E;
+  --mark-ink: #FFF4CC;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .35);
+  --scrim: rgba(0, 0, 0, .6);
+  color-scheme: dark;
+}

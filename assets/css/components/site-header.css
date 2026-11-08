@@ -1,0 +1,149 @@
+/* ==========================================================================
+   Cabecera fija
+   Marca · "Estás en" · herramientas (buscar, tema) · barra de progreso.
+   ========================================================================== */
+
+/* Franja que cubre el área segura superior (muesca) con el color de la cabecera */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: var(--safe-top);
+  z-index: 30;
+  background: var(--surface);
+}
+
+.site-header {
+  position: sticky;
+  top: var(--safe-top);
+  z-index: 20;
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-header .inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding-left: var(--gutter-left);
+  padding-right: var(--gutter-right);
+}
+
+/* --- Marca --- */
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  text-decoration: none;
+  color: var(--ink);
+  padding-right: 1rem;
+  margin-right: .25rem;
+  border-right: 1px solid var(--rule);
+}
+
+.brand-name {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -.005em;
+}
+
+.brand-call {
+  font-family: var(--f-type);
+  font-size: .75rem;
+  color: var(--ink-2);
+  letter-spacing: .06em;
+}
+
+/* --- "Estás en: …" --- */
+.where {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: .875rem;
+  line-height: 1.3;
+  color: var(--ink-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.where strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* --- Herramientas --- */
+.tools {
+  display: flex;
+  gap: .375rem;
+  align-items: center;
+}
+
+/* Botón de tema: luna en claro, sol en oscuro */
+.ic-sun {
+  display: none;
+}
+
+#theme-btn[aria-pressed="true"] .ic-sun {
+  display: block;
+}
+
+#theme-btn[aria-pressed="true"] .ic-moon {
+  display: none;
+}
+
+/* El botón "Índice" solo existe cuando el índice es un panel desplegable */
+.menu-btn {
+  display: none;
+}
+
+/* --- Barra de progreso de lectura --- */
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  pointer-events: none;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+@media (max-width: 68rem) {
+  .menu-btn {
+    display: inline-flex;
+  }
+
+  #theme-btn .btn-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+}
+
+@media (max-width: 44rem) {
+  .brand {
+    display: none;
+  }
+
+  .where-k {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+}

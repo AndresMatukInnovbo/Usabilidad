@@ -1,0 +1,10 @@
+# Dependencias y artefactos de build (si en algún momento se empaqueta el CSS)
+node_modules/
+dist/
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

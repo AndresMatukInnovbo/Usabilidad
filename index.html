@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="es" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Usabilidad para profesionales de la información</title>
+  <meta name="description" content="Sitio académico sobre usabilidad, accesibilidad, ingeniería de usabilidad, su ciclo de vida, métodos de evaluación y diseño web centrado en el usuario.">
+  <meta name="author" content="Andres Camilo Matuk">
+  <meta name="color-scheme" content="light dark">
+
+  <!-- Tipografías: Atkinson Hyperlegible (texto), Literata (títulos), Courier Prime (fichas) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Literata:opsz,wght@7..72,600;7..72,700&display=swap">
+
+  <!-- Estilos (punto de entrada; organiza capas y componentes) -->
+  <link rel="stylesheet" href="assets/css/main.css">
+
+  <!-- Arranque síncrono: aplica tema y tamaño guardados antes de pintar -->
+  <script src="assets/js/core/boot.js"></script>
+
+  <!-- Módulos: defer los ejecuta en este orden, con el HTML ya analizado -->
+  <script src="assets/js/core/utils.js" defer></script>
+  <script src="assets/js/shell/toast.js" defer></script>
+  <script src="assets/js/shell/theme-toggle.js" defer></script>
+  <script src="assets/js/shell/text-size.js" defer></script>
+  <script src="assets/js/shell/drawer.js" defer></script>
+  <script src="assets/js/shell/reading-progress.js" defer></script>
+  <script src="assets/js/features/reading-time.js" defer></script>
+  <script src="assets/js/features/site-search.js" defer></script>
+  <script src="assets/js/features/methods-filter.js" defer></script>
+  <script src="assets/js/features/sus-calculator.js" defer></script>
+  <script src="assets/js/features/copy-references.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="site-header" id="site-header">
+  <div class="inner">
+    <button id="menu-btn" class="icon-btn menu-btn" type="button" data-requires-js aria-controls="sidebar" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <span>Índice</span>
+    </button>
+    <a class="brand" href="#inicio"><span class="brand-name">Usabilidad Web</span><span class="brand-call">CDU 004.5</span></a>
+    <p class="where"><span class="where-k">Estás en: </span><strong id="where-text">Inicio</strong></p>
+    <div class="tools">
+      <button id="search-btn" class="icon-btn" type="button" data-requires-js aria-label="Buscar en el sitio">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+      </button>
+      <button id="theme-btn" class="icon-btn" type="button" data-requires-js aria-pressed="false">
+        <svg class="ic-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+        <svg class="ic-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+        <span class="btn-label">Tema oscuro</span>
+      </button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+</header>
+
+<div id="scrim" class="scrim" hidden></div>
+
+<div class="layout">
+  <aside id="sidebar" class="sidebar" aria-label="Índice y herramientas de lectura">
+    <div class="drawer-top">
+      <span class="brand-name">Usabilidad Web</span>
+      <button class="icon-btn" type="button" data-drawer-close aria-label="Cerrar índice">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="search" role="search" data-requires-js>
+      <label class="side-label" for="q">Buscar en el sitio</label>
+      <div class="search-box">
+        <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Ej.: heurística, WCAG, SUS" aria-describedby="q-hint" aria-controls="results">
+        <kbd aria-hidden="true">/</kbd>
+      </div>
+      <p id="q-hint" class="hint">Pulsa <kbd>/</kbd> para buscar desde cualquier parte. No importan tildes ni mayúsculas.</p>
+      <div id="results" class="results" aria-live="polite" hidden></div>
+    </div>
+
+    <nav class="toc" aria-label="Secciones del sitio" data-toc>
+      <p class="side-label">Contenido</p>
+      <ol>
+        <li><a href="#inicio"><span class="n">·</span><span>Inicio</span></a></li>
+        <li><a href="#s1"><span class="n">1</span><span>Usabilidad: nociones básicas para los profesionales de la información</span></a></li>
+        <li><a href="#s2"><span class="n">2</span><span>Usabilidad y accesibilidad</span></a></li>
+        <li><a href="#s3"><span class="n">3</span><span>Ingeniería de usabilidad</span></a></li>
+        <li><a href="#s4"><span class="n">4</span><span>Ciclo de vida de la ingeniería de usabilidad</span></a></li>
+        <li><a href="#s5"><span class="n">5</span><span>Métodos de evaluación de usabilidad</span></a></li>
+        <li><a href="#s6"><span class="n">6</span><span>Diseño web centrado en el usuario</span></a></li>
+        <li><a href="#s7"><span class="n">7</span><span>Referencias bibliográficas</span></a></li>
+        <li><a href="#anexo"><span class="n">A</span><span>Anexo: cómo se aplicó en este sitio</span></a></li>
+      </ol>
+    </nav>
+
+    <div class="textsize" role="group" aria-labelledby="ts-label" data-requires-js>
+      <p class="side-label" id="ts-label">Tamaño de letra</p>
+      <button id="dec" class="icon-btn" type="button" aria-label="Reducir tamaño de letra">A−</button>
+      <output id="scale-out" aria-live="polite">100 %</output>
+      <button id="inc" class="icon-btn" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+    </div>
+
+    <details class="help">
+      <summary>Cómo usar este sitio</summary>
+      <ul>
+        <li>El índice lleva a cualquier sección. La sección que estás leyendo aparece resaltada.</li>
+        <li data-requires-js>Pulsa <kbd>/</kbd> para buscar. El buscador ignora tildes y mayúsculas.</li>
+        <li>Ajusta el tamaño de letra con A− y A+, y cambia el tema con el botón de la cabecera.</li>
+        <li>Cada sección abre con una ficha de ideas clave y su tiempo estimado de lectura.</li>
+        <li>En pantallas pequeñas, el botón Índice abre este panel; se cierra con × o con la tecla <kbd>Esc</kbd>.</li>
+      </ul>
+    </details>
+  </aside>
+
+  <main id="contenido" tabindex="-1">
+
+    <section class="hero" id="inicio" data-spy data-label="Inicio" aria-labelledby="titulo">
+      <div class="hero-text">
+        <p class="eyebrow">Arquitectura de Información y Usabilidad · Parte 1</p>
+        <h1 id="titulo" tabindex="-1">Usabilidad para profesionales de la información</h1>
+        <p class="lead">Qué es la usabilidad, cómo se relaciona con la accesibilidad, cómo se incorpora al desarrollo de un sitio web mediante la ingeniería de usabilidad y el diseño centrado en el usuario, y con qué métodos se evalúa.</p>
+        <p class="meta">7 secciones y un anexo · Lectura total aprox. <span id="rt-total">45</span> min · Actualizado el 8 de noviembre de 2026</p>
+        <dl class="credits">
+          <dt>Autor</dt><dd>Andres Camilo Matuk</dd>
+          <dt>Curso</dt><dd>Arquitectura de Información y Usabilidad</dd>
+          <dt>Docente</dt><dd>Hernán Darío Cruz Bueno</dd>
+        </dl>
+        <p class="actions"><a class="btn" href="#s1">Empezar a leer</a><a class="btn ghost" href="#anexo">Ver cómo se aplicó al sitio</a></p>
+      </div>
+      <figure class="index-card catalog" aria-labelledby="cat-cap">
+        <div class="cat-grid">
+          <div class="cat-head"><span class="cat-call">004.5</span><span>Matuk, Andres Camilo</span></div>
+          <div class="cat-call">CDU</div>
+          <div class="cat-body">
+            <p>Usabilidad para profesionales de la información : nociones, métodos y diseño centrado en el usuario / Andres Camilo Matuk. -- [Sitio web]. -- 2026.</p>
+            <p class="indent">1 recurso en línea (7 secciones, 1 anexo).</p>
+            <p class="indent">Trabajo del curso Arquitectura de Información y Usabilidad, parte 1. Docente: Hernán Darío Cruz Bueno.</p>
+            <p class="indent">Incluye referencias bibliográficas (sección 7).</p>
+            <p class="indent">1. Usabilidad. 2. Accesibilidad web. 3. Ingeniería de usabilidad. 4. Evaluación heurística. 5. Diseño centrado en el usuario. I. Título.</p>
+          </div>
+        </div>
+        <figcaption id="cat-cap">Ficha catalográfica de este sitio, al estilo de las fichas de biblioteca.</figcaption>
+      </figure>
+    </section>
+
+    <nav class="toc-inline" aria-label="Contenido del sitio">
+      <p class="side-label">Contenido</p>
+      <ol>
+        <li><a href="#s1">Usabilidad: nociones básicas para los profesionales de la información</a></li>
+        <li><a href="#s2">Usabilidad y accesibilidad</a></li>
+        <li><a href="#s3">Ingeniería de usabilidad</a></li>
+        <li><a href="#s4">Ciclo de vida de la ingeniería de usabilidad</a></li>
+        <li><a href="#s5">Métodos de evaluación de usabilidad</a></li>
+        <li><a href="#s6">Diseño web centrado en el usuario</a></li>
+        <li><a href="#s7">Referencias bibliográficas</a></li>
+        <li class="is-annex"><a href="#anexo">Anexo: cómo se aplicó en este sitio</a></li>
+      </ol>
+    </nav>
+
+    <!-- ============ 1 ============ -->
+    <section class="chapter" id="s1" data-section data-spy data-label="§1 Usabilidad: nociones básicas" aria-labelledby="h-s1">
+      <p class="eyebrow">§1 · <span data-reading-time>Lectura: 6 min</span></p>
+      <h2 id="h-s1">Usabilidad: nociones básicas para los profesionales de la información</h2>
+      <aside class="index-card ficha" aria-label="Ideas clave de la sección 1">
+        <p class="ficha-head"><span>Ideas clave</span><span>§1</span></p>
+        <ul>
+          <li>La usabilidad es un atributo de calidad: indica qué tan fácil, eficiente y satisfactorio resulta usar un sistema para lograr un objetivo.</li>
+          <li>Siempre depende de quién usa el sistema, para qué lo usa y en qué contexto.</li>
+          <li>Organizar la información para que otros la encuentren, el oficio de bibliotecólogos, archivistas y documentalistas, es la base de la usabilidad web.</li>
+        </ul>
+      </aside>
+
+      <h3 id="s1-1"><span class="sn">1.1</span>¿Qué es la usabilidad?</h3>
+      <p>La palabra viene del inglés <i lang="en">usability</i> y se refiere, en términos sencillos, a la facilidad de uso. En la web, un sitio es usable cuando las personas encuentran lo que buscan, entienden lo que ven y completan sus tareas sin frustrarse ni pedir ayuda. Steve Krug (2014) lo resume en una regla práctica: una buena página se entiende sin que el visitante tenga que detenerse a pensar cómo funciona.</p>
+      <p>La definición de referencia es la de la norma <abbr title="International Organization for Standardization">ISO</abbr> 9241-11:2018. Según ella, la usabilidad es la medida en que usuarios concretos pueden usar un sistema, producto o servicio para alcanzar objetivos concretos con <strong>eficacia</strong>, <strong>eficiencia</strong> y <strong>satisfacción</strong>, dentro de un <strong>contexto de uso</strong> determinado. Cada parte de la definición tiene consecuencias prácticas:</p>
+      <dl class="defs">
+        <dt>Usuarios concretos</dt>
+        <dd>No existe un sitio usable “para todo el mundo” en abstracto. El catálogo de una biblioteca universitaria no lo usan igual un estudiante de primer semestre, un investigador y un bibliotecario de procesos técnicos.</dd>
+        <dt>Objetivos concretos</dt>
+        <dd>La usabilidad se juzga sobre tareas reales: encontrar un libro, renovar un préstamo, descargar un artículo, reservar una sala de estudio.</dd>
+        <dt>Eficacia</dt>
+        <dd>Si la persona logra la tarea de forma completa y correcta. Se mide, por ejemplo, con el porcentaje de tareas completadas.</dd>
+        <dt>Eficiencia</dt>
+        <dd>Los recursos que invierte para lograrla: tiempo, clics, esfuerzo mental. Se mide con el tiempo por tarea o el número de pasos.</dd>
+        <dt>Satisfacción</dt>
+        <dd>Cómo se siente la persona con la experiencia: comodidad, confianza, ausencia de molestias. Se mide con cuestionarios como el SUS (sección 5.5).</dd>
+        <dt>Contexto de uso</dt>
+        <dd>El entorno en que ocurre la interacción: dispositivo, conexión, ruido, luz, prisa, conocimientos previos. Un mismo sitio puede ser cómodo en un computador de escritorio y difícil en un celular con datos limitados.</dd>
+      </dl>
+
+      <h3 id="s1-2"><span class="sn">1.2</span>Los cinco componentes de la usabilidad</h3>
+      <p>Jakob Nielsen, uno de los autores más citados del área, describe la usabilidad a partir de cinco componentes que se pueden observar y medir (Nielsen, 2012). El Informe APEI sobre usabilidad los recoge como punto de partida para cualquier evaluación (Hassan Montero y Ortega Santamaría, 2009).</p>
+      <div class="table-wrap">
+        <table class="stack">
+          <thead><tr><th scope="col">Componente</th><th scope="col">Pregunta clave</th><th scope="col">Cómo se mide</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Facilidad de aprendizaje</th><td data-label="Pregunta clave">¿Qué tan fácil es hacer las tareas básicas la primera vez?</td><td data-label="Cómo se mide">Tasa de éxito y tiempo de usuarios nuevos</td></tr>
+            <tr><th scope="row">Eficiencia</th><td data-label="Pregunta clave">Una vez aprendido el sitio, ¿con qué rapidez se completan las tareas?</td><td data-label="Cómo se mide">Tiempo por tarea de usuarios con experiencia</td></tr>
+            <tr><th scope="row">Facilidad de recordar</th><td data-label="Pregunta clave">Tras un tiempo sin usarlo, ¿cuánto cuesta volver a manejarlo?</td><td data-label="Cómo se mide">Desempeño de usuarios que regresan</td></tr>
+            <tr><th scope="row">Errores</th><td data-label="Pregunta clave">¿Cuántos errores se cometen, qué tan graves son y qué tan fácil es recuperarse?</td><td data-label="Cómo se mide">Número y gravedad de los errores por tarea</td></tr>
+            <tr><th scope="row">Satisfacción</th><td data-label="Pregunta clave">¿Resulta agradable usarlo?</td><td data-label="Cómo se mide">Cuestionarios como el SUS y comentarios de los usuarios</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Nielsen distingue además entre <strong>utilidad</strong>, que el sitio ofrezca las funciones que la persona necesita, y <strong>usabilidad</strong>, que esas funciones sean fáciles y agradables de usar. Un sitio solo resulta útil cuando reúne ambas: un repositorio con miles de tesis no sirve si nadie logra encontrar la que necesita. La satisfacción, por su parte, depende tanto de lo que el sitio ofrece como de evitar la frustración durante el uso (Hassan Montero, 2006).</p>
+
+      <h3 id="s1-3"><span class="sn">1.3</span>Por qué la usabilidad es asunto de los profesionales de la información</h3>
+      <p>Bibliotecólogos, archivistas, documentalistas y gestores de información trabajan cada vez más a través de interfaces: catálogos en línea (<abbr title="Online Public Access Catalog">OPAC</abbr>), herramientas de descubrimiento, repositorios institucionales, bibliotecas digitales, bases de datos y sitios web institucionales. Si esas interfaces son difíciles de usar, la colección existe pero el usuario no llega a ella.</p>
+      <p>La profesión aporta conocimientos que son la base de un sitio usable:</p>
+      <ul>
+        <li><strong>Organización y clasificación.</strong> Los sistemas de clasificación, los esquemas de metadatos y los vocabularios controlados son, en la web, los sistemas de organización y etiquetado de la arquitectura de la información.</li>
+        <li><strong>Estudios de usuarios.</strong> La tradición de estudiar necesidades y comportamiento informativo coincide con la investigación de usuarios del diseño centrado en el usuario.</li>
+        <li><strong>Recuperación de información.</strong> Saber cómo busca la gente y cómo se construye un sistema de búsqueda es clave para el buscador interno de un sitio.</li>
+        <li><strong>Servicio de referencia.</strong> La entrevista de referencia, que aclara qué necesita realmente quien pregunta, es el mismo ejercicio que una entrevista con usuarios.</li>
+      </ul>
+      <p>No es casual que Louis Rosenfeld y Peter Morville, autores del libro clásico de arquitectura de la información, se formaran en bibliotecología. Baeza-Yates, Rivera Loaiza y Velasco Martín (2004) muestran cómo arquitectura de la información y usabilidad se complementan en el diseño de sitios web.</p>
+      <p>Un problema frecuente en los sitios de bibliotecas es la jerga profesional en las etiquetas. Términos como “OPAC”, “hemeroteca”, “recursos electrónicos” o “préstamo interbibliotecario” son claros para el personal, pero no siempre para los usuarios. Las pruebas con usuarios ayudan a encontrar las palabras que la gente entiende.</p>
+
+      <h3 id="s1-4"><span class="sn">1.4</span>Conceptos relacionados</h3>
+      <dl class="defs">
+        <dt>Experiencia de usuario (<abbr title="User Experience">UX</abbr>)</dt>
+        <dd>Concepto más amplio que la usabilidad: abarca percepciones, emociones y respuestas de la persona antes, durante y después del uso. La usabilidad es uno de sus componentes.</dd>
+        <dt>Accesibilidad</dt>
+        <dd>Posibilidad de que cualquier persona, con independencia de sus capacidades o de sus condiciones técnicas, acceda al contenido y lo use (sección 2).</dd>
+        <dt>Arquitectura de la información</dt>
+        <dd>Diseño de la estructura de un sitio: cómo se organiza, rotula, navega y busca el contenido. Rosenfeld, Morville y Arango (2015) la describen a partir de cuatro sistemas: organización, etiquetado, navegación y búsqueda.</dd>
+        <dt>Interacción persona-ordenador (<abbr title="Interacción persona-ordenador">IPO</abbr>)</dt>
+        <dd>Disciplina que estudia el diseño, la evaluación y la implementación de sistemas interactivos para uso humano. En inglés, <i lang="en">Human-Computer Interaction</i> (HCI).</dd>
+        <dt>Encontrabilidad</dt>
+        <dd>Facilidad con que un contenido puede ser localizado, tanto dentro del sitio como desde buscadores externos (Morville, 2005).</dd>
+      </dl>
+
+      <h3 id="s1-5"><span class="sn">1.5</span>Ideas equivocadas frecuentes</h3>
+      <div class="table-wrap">
+        <table class="stack">
+          <thead><tr><th scope="col">Idea equivocada</th><th scope="col">Lo que muestra la práctica</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">“La usabilidad es cuestión de gustos.”</th><td data-label="Lo que muestra la práctica">Se mide con datos: tasas de éxito, tiempos, errores y cuestionarios validados.</td></tr>
+            <tr><th scope="row">“Si a mí me parece claro, a los usuarios también.”</th><td data-label="Lo que muestra la práctica">Quien diseña conoce demasiado el sitio. Solo observando a usuarios reales se descubre lo que no entienden.</td></tr>
+            <tr><th scope="row">“Usable significa simple y poco atractivo.”</th><td data-label="Lo que muestra la práctica">Estética y usabilidad se refuerzan: las interfaces atractivas se perciben como más fáciles de usar (Kurosu y Kashimura, 1995).</td></tr>
+            <tr><th scope="row">“La usabilidad se revisa al final.”</th><td data-label="Lo que muestra la práctica">Corregir un problema en un boceto cuesta mucho menos que corregirlo en un sitio publicado. Por eso la evaluación acompaña todo el proceso (secciones 3 y 4).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 2 ============ -->
+    <section class="chapter" id="s2" data-section data-spy data-label="§2 Usabilidad y accesibilidad" aria-labelledby="h-s2">
+      <p class="eyebrow">§2 · <span data-reading-time>Lectura: 6 min</span></p>
+      <h2 id="h-s2">Usabilidad y accesibilidad</h2>
+      <aside class="index-card ficha" aria-label="Ideas clave de la sección 2">
+        <p class="ficha-head"><span>Ideas clave</span><span>§2</span></p>
+        <ul>
+          <li>La accesibilidad busca que cualquier persona, con independencia de sus capacidades o de sus condiciones técnicas, pueda acceder al contenido y usarlo.</li>
+          <li>Es condición previa de la usabilidad: lo que no se puede percibir u operar, no se puede usar.</li>
+          <li>El referente técnico son las pautas WCAG del W3C. En Colombia, la Resolución 1519 de 2020 exige el nivel AA de WCAG 2.1 a las entidades públicas.</li>
+        </ul>
+      </aside>
+
+      <h3 id="s2-1"><span class="sn">2.1</span>¿Qué es la accesibilidad web?</h3>
+      <p>Hassan Montero, Martín Fernández e Iazza (2004) definen la accesibilidad como la posibilidad de que un sitio web pueda ser visitado y usado por el mayor número posible de personas, con independencia de sus limitaciones propias o de las que se derivan del contexto de acceso. Esas limitaciones son de dos tipos:</p>
+      <ul class="tiles">
+        <li><strong>Limitaciones de la persona</strong><p>Visuales (ceguera, baja visión, daltonismo), auditivas, motrices (temblor, imposibilidad de usar el ratón), cognitivas y de aprendizaje (dislexia, déficit de atención) y las asociadas a la edad. También el idioma o una baja alfabetización digital.</p></li>
+        <li><strong>Limitaciones del contexto</strong><p>Pantallas pequeñas, conexiones lentas o datos limitados, navegadores antiguos, entornos ruidosos, sol directo sobre la pantalla o una mano ocupada.</p></li>
+      </ul>
+      <p>Tim Berners-Lee, creador de la web y fundador del W3C, ha defendido que el valor de la web está en su universalidad, y que el acceso de todas las personas, tengan o no una discapacidad, es parte esencial de ella (W3C Web Accessibility Initiative, s. f.).</p>
+
+      <h3 id="s2-2"><span class="sn">2.2</span>Cómo se relacionan</h3>
+      <p>Los dos conceptos se solapan, pero no son lo mismo. La usabilidad pregunta si los usuarios previstos pueden usar el sitio con facilidad; la accesibilidad pregunta si puede usarlo cualquier persona. La relación más importante es de dependencia: <strong>la accesibilidad es condición previa de la usabilidad</strong>. Si un lector de pantalla no puede leer un botón, para esa persona el botón no existe, por bien diseñado que esté.</p>
+      <div class="table-wrap">
+        <table class="stack">
+          <thead><tr><th scope="col">Aspecto</th><th scope="col">Usabilidad</th><th scope="col">Accesibilidad</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Pregunta central</th><td data-label="Usabilidad">¿Los usuarios previstos logran sus objetivos con eficacia, eficiencia y satisfacción?</td><td data-label="Accesibilidad">¿Puede cualquier persona percibir, entender y operar el contenido?</td></tr>
+            <tr><th scope="row">A quién atiende</th><td data-label="Usabilidad">Los perfiles de usuarios definidos para el sitio</td><td data-label="Accesibilidad">Toda la diversidad de personas y de contextos técnicos</td></tr>
+            <tr><th scope="row">Referentes</th><td data-label="Usabilidad">ISO 9241-11, heurísticas de Nielsen, guías de estilo</td><td data-label="Accesibilidad">WCAG 2.2 del W3C; en Colombia, Resolución 1519 de 2020 y NTC 5854</td></tr>
+            <tr><th scope="row">Cómo se evalúa</th><td data-label="Usabilidad">Pruebas con usuarios, evaluación heurística, cuestionarios</td><td data-label="Accesibilidad">Revisión de criterios de conformidad, herramientas automáticas, revisión manual y pruebas con personas con discapacidad</td></tr>
+            <tr><th scope="row">Resultado</th><td data-label="Usabilidad">Métricas de éxito, tiempo, errores y satisfacción</td><td data-label="Accesibilidad">Nivel de conformidad: A, AA o AAA</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Un sitio puede cumplir criterios técnicos de accesibilidad y aun así ser confuso, y un sitio cómodo para la mayoría puede excluir a quien navega solo con el teclado. Por eso conviene trabajarlas juntas. Además, las mejoras de accesibilidad benefician a todos: los subtítulos sirven en un bus ruidoso, el buen contraste ayuda bajo el sol y la navegación por teclado acelera el trabajo de los usuarios expertos.</p>
+
+      <h3 id="s2-3"><span class="sn">2.3</span>Las pautas WCAG</h3>
+      <p>Las Pautas de Accesibilidad para el Contenido Web (<abbr title="Web Content Accessibility Guidelines">WCAG</abbr>) las elabora la Iniciativa de Accesibilidad Web (<abbr title="Web Accessibility Initiative">WAI</abbr>) del W3C. La versión vigente es WCAG 2.2, publicada como recomendación el 5 de octubre de 2023. WCAG 3.0 sigue en borrador de trabajo (el más reciente es de marzo de 2026), así que la referencia para cumplir normas sigue siendo WCAG 2.x. Las pautas se organizan en cuatro principios:</p>
+      <ul class="tiles">
+        <li><strong>Perceptible</strong><p>La información debe presentarse de forma que todos puedan percibirla.</p><span class="ex">Ej.: texto alternativo en imágenes, subtítulos, contraste suficiente.</span></li>
+        <li><strong>Operable</strong><p>Todos los controles deben poder usarse, con cualquier dispositivo de entrada.</p><span class="ex">Ej.: navegación completa con teclado, tiempo suficiente para leer.</span></li>
+        <li><strong>Comprensible</strong><p>El contenido y el funcionamiento deben poder entenderse.</p><span class="ex">Ej.: idioma declarado, comportamiento predecible, ayuda para corregir errores.</span></li>
+        <li><strong>Robusto</strong><p>El contenido debe funcionar con distintas tecnologías, incluidas las de apoyo.</p><span class="ex">Ej.: código válido, nombres y roles accesibles en los controles.</span></li>
+      </ul>
+      <p>Cada principio se concreta en pautas y criterios de conformidad verificables, agrupados en tres niveles: <strong>A</strong> (mínimo), <strong>AA</strong> (el que exige la mayoría de normas) y <strong>AAA</strong> (el más exigente). WCAG 2.2 incorporó criterios como un tamaño mínimo para los objetivos táctiles (24 × 24 píxeles CSS), que el foco del teclado no quede tapado por otros elementos, alternativas a los movimientos de arrastre, ayuda ubicada siempre en el mismo lugar y formas de iniciar sesión que no dependan de memorizar o transcribir datos.</p>
+
+      <h3 id="s2-4"><span class="sn">2.4</span>Marco normativo en Colombia</h3>
+      <div class="table-wrap">
+        <table class="stack">
+          <thead><tr><th scope="col">Norma</th><th scope="col">Qué establece</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Ley Estatutaria 1618 de 2013</th><td data-label="Qué establece">Garantiza el ejercicio pleno de los derechos de las personas con discapacidad, incluido el acceso a la información y a las tecnologías de la información y las comunicaciones.</td></tr>
+            <tr><th scope="row">Ley 1712 de 2014</th><td data-label="Qué establece">Ley de Transparencia y del Derecho de Acceso a la Información Pública. Obliga a las entidades a divulgar la información en formatos accesibles para todas las personas.</td></tr>
+            <tr><th scope="row">Resolución MinTIC 1519 de 2020</th><td data-label="Qué establece">Su Anexo 1 fija las directrices de accesibilidad web. Desde el 1 de enero de 2022, los sujetos obligados deben cumplir el nivel AA de WCAG 2.1 en sus portales y sedes electrónicas.</td></tr>
+            <tr><th scope="row">NTC 5854 de 2011 (ICONTEC)</th><td data-label="Qué establece">Norma técnica colombiana de accesibilidad a páginas web, basada en WCAG 2.0.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Para bibliotecas públicas, universidades públicas y archivos estatales, cumplir estas normas es una obligación. Para las instituciones privadas es, como mínimo, una buena práctica y un criterio de calidad.</p>
+
+      <h3 id="s2-5"><span class="sn">2.5</span>Pautas prácticas para cualquier sitio</h3>
+      <ul class="check">
+        <li>Escribir un texto alternativo que describa la función de cada imagen informativa, y marcar como decorativas las que no aportan información.</li>
+        <li>Mantener un contraste mínimo de 4,5:1 en el texto normal y de 3:1 en el texto grande.</li>
+        <li>Permitir usar todo el sitio con el teclado y mostrar siempre dónde está el foco.</li>
+        <li>Estructurar cada página con encabezados jerárquicos y regiones: cabecera, navegación, contenido principal y pie.</li>
+        <li>Redactar enlaces que se entiendan fuera de contexto: “Descargar el reglamento de préstamo (PDF, 300 KB)” en lugar de “clic aquí”.</li>
+        <li>Asociar cada campo de formulario con su etiqueta y explicar los errores con texto.</li>
+        <li>No transmitir información solo con el color.</li>
+        <li>Ofrecer subtítulos y transcripciones para el audio y el video.</li>
+        <li>Declarar el idioma de la página y permitir ampliar el texto al 200 % sin perder contenido ni funciones.</li>
+      </ul>
+    </section>
+
+    <!-- ============ 3 ============ -->
+    <section class="chapter" id="s3" data-section data-spy data-label="§3 Ingeniería de usabilidad" aria-labelledby="h-s3">
+      <p class="eyebrow">§3 · <span data-reading-time>Lectura: 5 min</span></p>
+      <h2 id="h-s3">Ingeniería de usabilidad</h2>
+      <aside class="index-card ficha" aria-label="Ideas clave de la sección 3">
+        <p class="ficha-head"><span>Ideas clave</span><span>§3</span></p>
+        <ul>
+          <li>Es un enfoque sistemático que convierte la usabilidad en requisitos medibles y los verifica con datos durante todo el desarrollo.</li>
+          <li>Se apoya en tres principios: atención temprana a los usuarios y sus tareas, medición empírica y diseño iterativo (Gould y Lewis, 1985).</li>
+          <li>Sus metas se expresan como especificaciones de usabilidad: qué atributo se mide, cómo y qué nivel se quiere alcanzar.</li>
+        </ul>
+      </aside>
+
+      <h3 id="s3-1"><span class="sn">3.1</span>Definición y origen</h3>
+      <p>La ingeniería de usabilidad es el conjunto de actividades que, a lo largo del ciclo de vida de un producto, permiten diseñar, construir y verificar su usabilidad con un método propio de la ingeniería: se definen objetivos medibles, se sigue un proceso conocido y se toman decisiones con base en evidencia.</p>
+      <p>El término se consolidó a finales de la década de 1980. John Whiteside, John Bennett y Karen Holtzblatt, de Digital Equipment Corporation, describieron cómo aplicaban metas de usabilidad medibles al desarrollo de software (Whiteside et al., 1988). En 1993, Jakob Nielsen publicó <cite>Usability Engineering</cite>, que se convirtió en la obra de referencia del área.</p>
+      <p>La idea central es que la usabilidad no se agrega al final con un retoque visual. Se planifica desde el inicio, igual que el rendimiento o la seguridad, y se comprueba con usuarios.</p>
+
+      <h3 id="s3-2"><span class="sn">3.2</span>Principios</h3>
+      <p>Gould y Lewis (1985) formularon los tres principios en los que se apoya la disciplina:</p>
+      <ul class="tiles cols-3">
+        <li><strong>Atención temprana a usuarios y tareas</strong><p>El equipo estudia directamente a quienes usarán el sistema, sus tareas y su entorno, antes de diseñar.</p></li>
+        <li><strong>Medición empírica</strong><p>Desde etapas tempranas, usuarios reales prueban simulaciones y prototipos; se observa y se mide su desempeño y sus reacciones.</p></li>
+        <li><strong>Diseño iterativo</strong><p>Cuando las pruebas revelan problemas, se corrigen y se vuelve a probar, tantas veces como sea necesario.</p></li>
+      </ul>
+      <p>A estos se suma una regla que repite toda la literatura del área: <strong>el diseñador no es el usuario</strong>. Quien construye un sitio lo conoce demasiado bien para ver sus problemas.</p>
+
+      <h3 id="s3-3"><span class="sn">3.3</span>Especificaciones de usabilidad</h3>
+      <p>Una especificación de usabilidad traduce una meta general, como “el catálogo debe ser fácil de usar”, en un requisito que se puede comprobar. Para cada atributo se indica cómo se medirá y qué niveles se consideran aceptables. La tabla muestra un ejemplo para el rediseño del catálogo en línea de una biblioteca universitaria.</p>
+      <div class="table-wrap">
+        <table class="wide">
+          <caption>Ejemplo ilustrativo con cifras hipotéticas.</caption>
+          <thead><tr><th scope="col">Atributo</th><th scope="col">Cómo se mide</th><th scope="col" class="num">Nivel actual</th><th scope="col" class="num">Mínimo aceptable</th><th scope="col" class="num">Meta</th><th scope="col" class="num">Mejor caso</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Eficacia</th><td>Participantes que localizan un libro por su título sin ayuda</td><td class="num">70 %</td><td class="num">80 %</td><td class="num">90 %</td><td class="num">100 %</td></tr>
+            <tr><th scope="row">Eficiencia</th><td>Tiempo medio para esa misma tarea</td><td class="num">95 s</td><td class="num">60 s</td><td class="num">30 s</td><td class="num">15 s</td></tr>
+            <tr><th scope="row">Facilidad de aprendizaje</th><td>Errores en el primer intento de renovar un préstamo</td><td class="num">3</td><td class="num">2</td><td class="num">1</td><td class="num">0</td></tr>
+            <tr><th scope="row">Satisfacción</th><td>Puntuación media en el cuestionario SUS (0 a 100)</td><td class="num">58</td><td class="num">68</td><td class="num">75</td><td class="num">85</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Con estas cifras, el equipo sabe cuándo ha terminado una iteración: cuando las pruebas alcanzan, al menos, el mínimo aceptable de cada atributo.</p>
+
+      <h3 id="s3-4"><span class="sn">3.4</span>Ingeniería de usabilidad de bajo costo</h3>
+      <p>Nielsen (1994b) propuso la <em>ingeniería de usabilidad de descuento</em> para equipos con poco tiempo y presupuesto, como muchas bibliotecas. Se apoya en tres técnicas sencillas: escenarios (prototipos reducidos a una tarea concreta), pruebas simplificadas de pensamiento en voz alta con pocos usuarios y evaluación heurística. Su argumento es que hacer algo de evaluación siempre es mejor que no hacer ninguna.</p>
+
+      <h3 id="s3-5"><span class="sn">3.5</span>Integración con la ingeniería de software</h3>
+      <p>La ingeniería de usabilidad no reemplaza a la ingeniería de software; trabaja junto a ella. Los requisitos de usabilidad se registran al lado de los requisitos funcionales, las pruebas con usuarios se programan en el cronograma como cualquier otra prueba y sus resultados alimentan el siguiente ciclo de desarrollo. En equipos ágiles, las actividades se reparten en iteraciones cortas: investigación ligera antes de cada ciclo y pruebas rápidas al final.</p>
+      <p>El trabajo es multidisciplinar. Suelen participar usuarios representativos, arquitectos de información (un rol natural para los profesionales de la información), diseñadores de interacción y visuales, desarrolladores, redactores de contenido y especialistas en evaluación y accesibilidad.</p>
+    </section>
+
+    <!-- ============ 4 ============ -->
+    <section class="chapter" id="s4" data-section data-spy data-label="§4 Ciclo de vida de la ingeniería de usabilidad" aria-labelledby="h-s4">
+      <p class="eyebrow">§4 · <span data-reading-time>Lectura: 6 min</span></p>
+      <h2 id="h-s4">Ciclo de vida de la ingeniería de usabilidad</h2>
+      <aside class="index-card ficha" aria-label="Ideas clave de la sección 4">
+        <p class="ficha-head"><span>Ideas clave</span><span>§4</span></p>
+        <ul>
+          <li>El ciclo de vida organiza las actividades de usabilidad en fases que acompañan todo el desarrollo, desde el análisis hasta después del lanzamiento.</li>
+          <li>El modelo de Deborah Mayhew (1999) tiene tres fases: análisis de requisitos; diseño, prueba y desarrollo; e instalación.</li>
+          <li>Todos los modelos comparten la misma lógica: entender, diseñar, evaluar y volver a diseñar.</li>
+        </ul>
+      </aside>
+
+      <h3 id="s4-1"><span class="sn">4.1</span>El modelo de Mayhew</h3>
+      <p>Deborah J. Mayhew describió en <cite>The Usability Engineering Lifecycle</cite> (1999) uno de los modelos más completos. Organiza las tareas en tres fases, y sus decisiones se documentan en una <strong>guía de estilo</strong> que crece durante el proyecto y asegura la consistencia de la interfaz.</p>
+      <figure class="diagram" aria-labelledby="mayhew-cap">
+        <ol class="phases">
+          <li>
+            <div><p class="phase-k">Fase 1</p><h4>Análisis de requisitos</h4></div>
+            <ul class="tasks">
+              <li>Perfil del usuario</li>
+              <li>Análisis contextual de tareas</li>
+              <li>Metas de usabilidad</li>
+              <li>Capacidades y restricciones de la plataforma</li>
+              <li>Principios generales de diseño</li>
+            </ul>
+            <p class="out">Resultado: guía de estilo, primera versión</p>
+          </li>
+          <li>
+            <div><p class="phase-k">Fase 2</p><h4>Diseño, prueba y desarrollo</h4></div>
+            <ol class="levels">
+              <li><strong>Nivel 1 · Modelo conceptual</strong><span>Reingeniería del trabajo, diseño del modelo conceptual y sus maquetas</span><span class="loop"><span aria-hidden="true">↺ </span>Evaluar e iterar hasta cumplir las metas</span></li>
+              <li><strong>Nivel 2 · Estándares de pantalla</strong><span>Estándares de diseño de pantallas y sus prototipos</span><span class="loop"><span aria-hidden="true">↺ </span>Evaluar e iterar hasta cumplir las metas</span></li>
+              <li><strong>Nivel 3 · Diseño detallado</strong><span>Diseño detallado de toda la interfaz</span><span class="loop"><span aria-hidden="true">↺ </span>Evaluar e iterar hasta cumplir las metas</span></li>
+            </ol>
+            <p class="out">La guía de estilo se amplía en cada nivel</p>
+          </li>
+          <li>
+            <div><p class="phase-k">Fase 3</p><h4>Instalación</h4></div>
+            <ul class="tasks">
+              <li>Puesta en marcha del sistema</li>
+              <li>Retroalimentación de los usuarios con el sistema en uso</li>
+            </ul>
+            <p class="out">Resultado: mejoras para la versión actual y la siguiente</p>
+          </li>
+        </ol>
+        <figcaption id="mayhew-cap">Ciclo de vida de la ingeniería de usabilidad según Mayhew (1999). Elaboración propia.</figcaption>
+      </figure>
+      <dl class="defs">
+        <dt>Fase 1. Análisis de requisitos</dt>
+        <dd>Se conoce a los usuarios (perfil), se observa cómo trabajan hoy en su entorno real (análisis contextual de tareas), se fijan metas cualitativas y cuantitativas como las especificaciones de la sección 3.3, se identifican las posibilidades y límites de la tecnología elegida y se reúnen las guías y principios de diseño aplicables.</dd>
+        <dt>Fase 2. Diseño, prueba y desarrollo</dt>
+        <dd>Avanza en tres niveles, de lo general a lo particular. Primero se define el modelo conceptual: cómo se organiza el sistema y cómo se moverá el usuario por él. Luego se fijan los estándares de pantalla: plantillas, controles y convenciones. Por último se diseña cada pantalla en detalle. En cada nivel se diseña, se prueba con usuarios y se repite hasta alcanzar las metas de la fase 1; solo entonces se pasa al siguiente.</dd>
+        <dt>Fase 3. Instalación</dt>
+        <dd>Con el sistema en uso, se recogen datos y opiniones de los usuarios para corregir la versión actual y planificar la siguiente.</dd>
+      </dl>
+      <p>En la práctica, el modelo se adapta al tamaño del proyecto: en un sitio pequeño, algunas tareas se simplifican o se combinan.</p>
+
+      <h3 id="s4-2"><span class="sn">4.2</span>El modelo de Nielsen</h3>
+      <p>En <cite>Usability Engineering</cite>, Nielsen (1993) propone once etapas. No son compartimentos estancos: varias se repiten o se solapan.</p>
+      <ol class="steps">
+        <li><strong>Conocer al usuario:</strong> sus características, sus tareas actuales y cómo evolucionarán.</li>
+        <li><strong>Análisis competitivo:</strong> estudiar productos similares como si fueran prototipos ya construidos.</li>
+        <li><strong>Establecer metas de usabilidad,</strong> considerando también su impacto económico.</li>
+        <li><strong>Diseño paralelo:</strong> varios diseñadores exploran alternativas de forma independiente.</li>
+        <li><strong>Diseño participativo:</strong> los usuarios colaboran en el diseño.</li>
+        <li><strong>Diseño coordinado de la interfaz total:</strong> consistencia entre pantallas, ayuda, documentación y formación.</li>
+        <li><strong>Aplicar guías y análisis heurístico.</strong></li>
+        <li><strong>Prototipado.</strong></li>
+        <li><strong>Pruebas empíricas</strong> con usuarios.</li>
+        <li><strong>Diseño iterativo,</strong> registrando las razones de cada decisión.</li>
+        <li><strong>Recoger retroalimentación</strong> del uso real.</li>
+      </ol>
+
+      <h3 id="s4-3"><span class="sn">4.3</span>El modelo MPIu+a</h3>
+      <p>En el ámbito hispanohablante, Toni Granollers (2004), de la Universitat de Lleida, propuso el Modelo de Proceso de la Ingeniería de la Usabilidad y de la Accesibilidad (<abbr title="Modelo de Proceso de la Ingeniería de la Usabilidad y de la Accesibilidad">MPIu+a</abbr>). Integra la ingeniería del software, la interacción persona-ordenador y la accesibilidad. Sus fases principales son análisis de requisitos, diseño, implementación y lanzamiento, mientras que el prototipado y la evaluación atraviesan todo el proceso. Los usuarios están en el centro del modelo, y la accesibilidad se considera en todas las fases.</p>
+
+      <h3 id="s4-4"><span class="sn">4.4</span>Comparación de los modelos</h3>
+      <div class="table-wrap">
+        <table class="stack">
+          <thead><tr><th scope="col">Modelo</th><th scope="col">Estructura</th><th scope="col">Énfasis</th><th scope="col">Se adapta bien a</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Mayhew (1999)</th><td data-label="Estructura">3 fases; la segunda dividida en 3 niveles</td><td data-label="Énfasis">Guía de estilo y evaluación por niveles</td><td data-label="Se adapta bien a">Proyectos grandes, con muchas pantallas</td></tr>
+            <tr><th scope="row">Nielsen (1993)</th><td data-label="Estructura">11 etapas</td><td data-label="Énfasis">Metas medibles y métodos de bajo costo</td><td data-label="Se adapta bien a">Equipos que necesitan una guía práctica y flexible</td></tr>
+            <tr><th scope="row">MPIu+a (Granollers, 2004)</th><td data-label="Estructura">4 fases y 2 actividades transversales</td><td data-label="Énfasis">Integración con la ingeniería del software y la accesibilidad</td><td data-label="Se adapta bien a">Proyectos que deben cumplir requisitos de accesibilidad desde el inicio</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="s4-5"><span class="sn">4.5</span>Ejemplo: rediseño del sitio de una biblioteca universitaria</h3>
+      <p>Así se vería el modelo de Mayhew aplicado a un caso conocido por los profesionales de la información:</p>
+      <ol class="timeline">
+        <li><strong>Fase 1 · Análisis de requisitos</strong><p>Encuestas y entrevistas a estudiantes, docentes e investigadores; observación en la sala de referencia; revisión de los registros del buscador para ver qué se busca y qué falla. Se fijan metas como “el 90 % encuentra el horario de atención en menos de 20 segundos”.</p></li>
+        <li><strong>Fase 2 · Nivel 1</strong><p>Card sorting para decidir el menú principal; prototipo en papel con las grandes áreas (Buscar, Servicios, Espacios, Ayuda); pruebas con cinco estudiantes.</p></li>
+        <li><strong>Fase 2 · Nivel 2</strong><p>Plantillas de página (inicio, resultados de búsqueda, ficha del libro) y guía de estilo; prototipo navegable; evaluación heurística y nuevas pruebas.</p></li>
+        <li><strong>Fase 2 · Nivel 3</strong><p>Diseño de todas las páginas; revisión de accesibilidad con WCAG 2.1 AA; pruebas finales con usuarios, incluidas personas que usan lector de pantalla.</p></li>
+        <li><strong>Fase 3 · Instalación</strong><p>Lanzamiento; análisis de las búsquedas sin resultados y de las páginas con más abandono; buzón de sugerencias; nueva ronda de mejoras.</p></li>
+      </ol>
+    </section>
+
+    <!-- ============ 5 ============ -->
+    <section class="chapter" id="s5" data-section data-spy data-label="§5 Métodos de evaluación de usabilidad" aria-labelledby="h-s5">
+      <p class="eyebrow">§5 · <span data-reading-time>Lectura: 10 min</span></p>
+      <h2 id="h-s5">Métodos de evaluación de usabilidad</h2>
+      <aside class="index-card ficha" aria-label="Ideas clave de la sección 5">
+        <p class="ficha-head"><span>Ideas clave</span><span>§5</span></p>
+        <ul>
+          <li>Los métodos se agrupan en tres familias: inspección (expertos revisan), indagación (se pregunta y se observa a los usuarios) y prueba (usuarios reales realizan tareas).</li>
+          <li>Se combinan: la inspección es rápida y económica; las pruebas con usuarios revelan problemas que los expertos no ven.</li>
+          <li>La evaluación formativa se hace durante el diseño para mejorarlo; la sumativa, al final, para medir o comparar.</li>
+        </ul>
+      </aside>
+
+      <h3 id="s5-1"><span class="sn">5.1</span>Formas de clasificar la evaluación</h3>
+      <dl class="defs">
+        <dt>Formativa o sumativa</dt>
+        <dd>La formativa busca problemas para corregirlos mientras se diseña. La sumativa mide el resultado final o compara versiones.</dd>
+        <dt>Cualitativa o cuantitativa</dt>
+        <dd>La cualitativa explica por qué ocurren los problemas (observación, comentarios). La cuantitativa mide cuánto (tiempos, tasas de éxito, puntuaciones).</dd>
+        <dt>Con expertos o con usuarios</dt>
+        <dd>Los métodos de inspección no necesitan usuarios; los de indagación y prueba sí.</dd>
+        <dt>Moderada o no moderada, presencial o remota</dt>
+        <dd>Según si un facilitador acompaña la sesión y si se realiza en el mismo lugar que el participante.</dd>
+      </dl>
+
+      <h3 id="s5-2"><span class="sn">5.2</span>Catálogo de métodos</h3>
+      <p>Filtra la tabla por familia para comparar los métodos de cada una.</p>
+      <div class="filters" id="methods-filters" role="group" aria-label="Filtrar métodos por familia" data-requires-js>
+        <button type="button" class="chip" aria-controls="methods" data-filter="todos" aria-pressed="true">Todos</button>
+        <button type="button" class="chip" aria-controls="methods" data-filter="inspeccion" aria-pressed="false">Inspección</button>
+        <button type="button" class="chip" aria-controls="methods" data-filter="indagacion" aria-pressed="false">Indagación</button>
+        <button type="button" class="chip" aria-controls="methods" data-filter="prueba" aria-pressed="false">Prueba</button>
+        <span id="methods-count" class="count" aria-live="polite">Mostrando 18 de 18 métodos</span>
+      </div>
+      <div class="table-wrap">
+        <table class="stack" id="methods">
+          <thead><tr><th scope="col">Método</th><th scope="col">Familia</th><th scope="col">Quién participa</th><th scope="col">Cuándo usarlo</th><th scope="col">Qué se obtiene</th></tr></thead>
+          <tbody>
+            <tr data-family="inspeccion"><th scope="row">Evaluación heurística</th><td data-label="Familia"><span class="pill">Inspección</span></td><td data-label="Quién participa">3 a 5 evaluadores expertos</td><td data-label="Cuándo usarlo">Desde los primeros prototipos</td><td data-label="Qué se obtiene">Lista de problemas clasificados por gravedad y relacionados con principios reconocidos</td></tr>
+            <tr data-family="inspeccion"><th scope="row">Recorrido cognitivo</th><td data-label="Familia"><span class="pill">Inspección</span></td><td data-label="Quién participa">Expertos que se ponen en el lugar de un usuario nuevo</td><td data-label="Cuándo usarlo">Diseño temprano, sobre tareas clave</td><td data-label="Qué se obtiene">Pasos de una tarea en los que un usuario nuevo no sabría qué hacer</td></tr>
+            <tr data-family="inspeccion"><th scope="row">Recorrido pluralístico</th><td data-label="Familia"><span class="pill">Inspección</span></td><td data-label="Quién participa">Usuarios, diseñadores y expertos juntos</td><td data-label="Cuándo usarlo">Diseño temprano, con prototipos en papel</td><td data-label="Qué se obtiene">Problemas y soluciones discutidos paso a paso desde varias perspectivas</td></tr>
+            <tr data-family="inspeccion"><th scope="row">Inspección de estándares y guías</th><td data-label="Familia"><span class="pill">Inspección</span></td><td data-label="Quién participa">Expertos en la norma</td><td data-label="Cuándo usarlo">Durante el diseño y antes del lanzamiento</td><td data-label="Qué se obtiene">Grado de cumplimiento de normas como WCAG o de la guía de estilo</td></tr>
+            <tr data-family="inspeccion"><th scope="row">Inspección de consistencia</th><td data-label="Familia"><span class="pill">Inspección</span></td><td data-label="Quién participa">Diseñadores de distintas áreas</td><td data-label="Cuándo usarlo">Sitios con muchas secciones o varios productos</td><td data-label="Qué se obtiene">Diferencias de terminología, diseño y comportamiento que conviene unificar</td></tr>
+            <tr data-family="inspeccion"><th scope="row">Validación automática de accesibilidad</th><td data-label="Familia"><span class="pill">Inspección</span></td><td data-label="Quién participa">Herramientas como WAVE, axe, Lighthouse o TAW, y un experto que interpreta</td><td data-label="Cuándo usarlo">Durante el desarrollo y después de cada cambio</td><td data-label="Qué se obtiene">Errores técnicos detectables por software; siempre requiere revisión manual</td></tr>
+            <tr data-family="indagacion"><th scope="row">Indagación contextual y observación de campo</th><td data-label="Familia"><span class="pill">Indagación</span></td><td data-label="Quién participa">Usuarios en su entorno real</td><td data-label="Cuándo usarlo">Antes de diseñar</td><td data-label="Qué se obtiene">Comprensión de las tareas, los problemas y el entorno reales</td></tr>
+            <tr data-family="indagacion"><th scope="row">Entrevistas</th><td data-label="Familia"><span class="pill">Indagación</span></td><td data-label="Quién participa">Usuarios, uno por uno</td><td data-label="Cuándo usarlo">En la planificación y después del lanzamiento</td><td data-label="Qué se obtiene">Necesidades, motivaciones y opiniones en profundidad</td></tr>
+            <tr data-family="indagacion"><th scope="row">Grupos focales</th><td data-label="Familia"><span class="pill">Indagación</span></td><td data-label="Quién participa">6 a 9 usuarios con un moderador</td><td data-label="Cuándo usarlo">En la planificación</td><td data-label="Qué se obtiene">Opiniones y actitudes del grupo; no muestran el comportamiento real de uso</td></tr>
+            <tr data-family="indagacion"><th scope="row">Encuestas y cuestionarios</th><td data-label="Familia"><span class="pill">Indagación</span></td><td data-label="Quién participa">Muchos usuarios</td><td data-label="Cuándo usarlo">En cualquier momento; el SUS, al terminar una prueba</td><td data-label="Qué se obtiene">Datos cuantitativos de perfil y de satisfacción</td></tr>
+            <tr data-family="indagacion"><th scope="row">Card sorting</th><td data-label="Familia"><span class="pill">Indagación</span></td><td data-label="Quién participa">15 o más usuarios</td><td data-label="Cuándo usarlo">Diseño conceptual</td><td data-label="Qué se obtiene">Cómo agrupan y nombran los usuarios los contenidos; base para el menú</td></tr>
+            <tr data-family="indagacion"><th scope="row">Analítica web y registros de búsqueda</th><td data-label="Familia"><span class="pill">Indagación</span></td><td data-label="Quién participa">Usuarios reales, sin intervención</td><td data-label="Cuándo usarlo">Después del lanzamiento</td><td data-label="Qué se obtiene">Páginas más usadas, puntos de abandono y búsquedas sin resultados</td></tr>
+            <tr data-family="prueba"><th scope="row">Test con usuarios y pensamiento en voz alta</th><td data-label="Familia"><span class="pill">Prueba</span></td><td data-label="Quién participa">5 usuarios representativos por ronda</td><td data-label="Cuándo usarlo">Desde prototipos en papel hasta el sitio publicado</td><td data-label="Qué se obtiene">Problemas observados y las razones que dan los propios usuarios</td></tr>
+            <tr data-family="prueba"><th scope="row">Medición del rendimiento</th><td data-label="Familia"><span class="pill">Prueba</span></td><td data-label="Quién participa">20 o más usuarios</td><td data-label="Cuándo usarlo">Evaluación sumativa</td><td data-label="Qué se obtiene">Tasas de éxito, tiempos y errores que se comparan con las metas</td></tr>
+            <tr data-family="prueba"><th scope="row">Tree testing</th><td data-label="Familia"><span class="pill">Prueba</span></td><td data-label="Quién participa">Usuarios que navegan por la estructura sin diseño visual</td><td data-label="Cuándo usarlo">Después del card sorting</td><td data-label="Qué se obtiene">Si la jerarquía de navegación permite encontrar los contenidos</td></tr>
+            <tr data-family="prueba"><th scope="row">Pruebas A/B</th><td data-label="Familia"><span class="pill">Prueba</span></td><td data-label="Quién participa">Visitantes reales, divididos al azar</td><td data-label="Cuándo usarlo">Sitio publicado con tráfico suficiente</td><td data-label="Qué se obtiene">Qué versión de una página funciona mejor según una métrica</td></tr>
+            <tr data-family="prueba"><th scope="row">Seguimiento ocular</th><td data-label="Familia"><span class="pill">Prueba</span></td><td data-label="Quién participa">Usuarios en laboratorio, con equipo especializado</td><td data-label="Cuándo usarlo">Ajuste del diseño visual</td><td data-label="Qué se obtiene">Dónde miran los usuarios y qué pasan por alto, en mapas de calor</td></tr>
+            <tr data-family="prueba"><th scope="row">Pruebas remotas no moderadas</th><td data-label="Familia"><span class="pill">Prueba</span></td><td data-label="Quién participa">Usuarios en su propio equipo, sin facilitador</td><td data-label="Cuándo usarlo">Usuarios dispersos o presupuesto limitado</td><td data-label="Qué se obtiene">Grabaciones y métricas de muchas sesiones</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="s5-3"><span class="sn">5.3</span>Evaluación heurística en detalle</h3>
+      <p>Es el método de inspección más usado. Lo propusieron Nielsen y Molich (1990): varios evaluadores revisan la interfaz por separado y anotan dónde se incumplen principios reconocidos de usabilidad, llamados heurísticas. Nielsen recomienda entre tres y cinco evaluadores, porque cada uno encuentra problemas distintos. En español, Hassan Montero y Martín Fernández (2003) publicaron una guía de evaluación heurística adaptada a sitios web.</p>
+      <p>Las diez heurísticas de Nielsen (1994a), con ejemplos en el sitio de una biblioteca:</p>
+      <div class="table-wrap">
+        <table class="stack">
+          <thead><tr><th scope="col">Heurística</th><th scope="col">Qué significa</th><th scope="col">Ejemplo en una biblioteca</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">1. Visibilidad del estado del sistema</th><td data-label="Qué significa">El sitio informa siempre qué está pasando, con una respuesta oportuna.</td><td data-label="Ejemplo en una biblioteca">Mostrar “Buscando en 3 catálogos…” y el número de resultados encontrados.</td></tr>
+            <tr><th scope="row">2. Relación entre el sistema y el mundo real</th><td data-label="Qué significa">Usar el lenguaje y los conceptos del usuario, no los internos.</td><td data-label="Ejemplo en una biblioteca">“Buscar libros y artículos” en vez de “OPAC”.</td></tr>
+            <tr><th scope="row">3. Control y libertad del usuario</th><td data-label="Qué significa">Ofrecer salidas claras para deshacer o cancelar.</td><td data-label="Ejemplo en una biblioteca">Quitar un filtro o cancelar una reserva con un solo clic.</td></tr>
+            <tr><th scope="row">4. Consistencia y estándares</th><td data-label="Qué significa">Lo mismo se llama y se comporta igual en todo el sitio, siguiendo convenciones conocidas.</td><td data-label="Ejemplo en una biblioteca">El enlace “Mi cuenta” siempre en la esquina superior derecha.</td></tr>
+            <tr><th scope="row">5. Prevención de errores</th><td data-label="Qué significa">Diseñar para que el error no llegue a ocurrir.</td><td data-label="Ejemplo en una biblioteca">Sugerir la ortografía correcta: “¿Quisiste decir García Márquez?”.</td></tr>
+            <tr><th scope="row">6. Reconocer antes que recordar</th><td data-label="Qué significa">Hacer visibles las opciones para no depender de la memoria.</td><td data-label="Ejemplo en una biblioteca">Mostrar las búsquedas recientes y los filtros aplicados.</td></tr>
+            <tr><th scope="row">7. Flexibilidad y eficiencia de uso</th><td data-label="Qué significa">Atajos para expertos sin complicar a los principiantes.</td><td data-label="Ejemplo en una biblioteca">Búsqueda simple por defecto y búsqueda avanzada opcional.</td></tr>
+            <tr><th scope="row">8. Diseño estético y minimalista</th><td data-label="Qué significa">Cada elemento sobrante compite con lo importante.</td><td data-label="Ejemplo en una biblioteca">Una página de inicio centrada en el buscador, sin anuncios que distraigan.</td></tr>
+            <tr><th scope="row">9. Ayudar a reconocer, diagnosticar y recuperarse de errores</th><td data-label="Qué significa">Mensajes en lenguaje claro que expliquen el problema y propongan una solución.</td><td data-label="Ejemplo en una biblioteca">“No hay resultados para ‘psicolojía’. Prueba con ‘psicología’ o solicita el libro por préstamo interbibliotecario.”</td></tr>
+            <tr><th scope="row">10. Ayuda y documentación</th><td data-label="Qué significa">Ayuda fácil de encontrar, breve y centrada en tareas.</td><td data-label="Ejemplo en una biblioteca">Guías cortas como “Cómo renovar un préstamo en 3 pasos”.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Cada problema encontrado se califica con la escala de gravedad de Nielsen, que ayuda a decidir qué corregir primero:</p>
+      <ol class="severity" aria-label="Escala de gravedad de 0 a 4">
+        <li><b>0</b>No es un problema de usabilidad</li>
+        <li><b>1</b>Estético: se corrige si sobra tiempo</li>
+        <li><b>2</b>Menor: prioridad baja</li>
+        <li><b>3</b>Mayor: prioridad alta</li>
+        <li><b>4</b>Catástrofe: corregir antes de publicar</li>
+      </ol>
+      <p>El procedimiento habitual es:</p>
+      <ol class="steps">
+        <li><strong>Preparar:</strong> definir el alcance, las tareas que se revisarán y el conjunto de heurísticas.</li>
+        <li><strong>Evaluar por separado:</strong> cada experto recorre el sitio al menos dos veces, una para familiarizarse y otra para revisar en detalle.</li>
+        <li><strong>Consolidar:</strong> reunir los hallazgos de todos y eliminar duplicados.</li>
+        <li><strong>Calificar la gravedad</strong> de cada problema.</li>
+        <li><strong>Informar:</strong> para cada problema, la heurística incumplida, la ubicación, la gravedad y una recomendación.</li>
+      </ol>
+
+      <h3 id="s5-4"><span class="sn">5.4</span>Test con usuarios paso a paso</h3>
+      <ol class="steps">
+        <li>Definir qué se quiere averiguar: preguntas concretas y tareas críticas.</li>
+        <li>Reclutar participantes que representen a los usuarios reales. Para pruebas cualitativas bastan cinco por perfil y por ronda.</li>
+        <li>Escribir escenarios realistas, por ejemplo: “Necesitas <cite>Cien años de soledad</cite> para mañana. Averigua si está disponible y dónde encontrarlo”.</li>
+        <li>Preparar el guion, el consentimiento informado y el entorno, y hacer una sesión piloto.</li>
+        <li>Conducir las sesiones: pedir al participante que piense en voz alta, sin ayudarle ni guiarle.</li>
+        <li>Registrar éxito, tiempo, errores y comentarios; grabar solo si el participante lo autoriza.</li>
+        <li>Aplicar al final un cuestionario de satisfacción como el SUS.</li>
+        <li>Analizar, priorizar los problemas y proponer soluciones.</li>
+        <li>Corregir el diseño y volver a probar.</li>
+      </ol>
+      <p>¿Por qué cinco usuarios? Nielsen y Landauer (1993) mostraron que la cantidad de problemas encontrados crece rápido con los primeros participantes y después se estanca. Con cinco usuarios se detecta la mayoría de los problemas de un diseño, y es más útil hacer tres rondas de cinco usuarios, corrigiendo entre una y otra, que una sola ronda de quince (Nielsen, 2000b).</p>
+      <figure class="chart" aria-labelledby="chart-cap">
+        <svg viewBox="0 0 420 250" role="img" aria-labelledby="chart-title chart-desc">
+          <title id="chart-title">Problemas encontrados según el número de usuarios</title>
+          <desc id="chart-desc">Curva creciente que pasa por 31 % con un usuario, 67 % con tres, 84 % con cinco, 98 % con diez y casi 100 % con quince.</desc>
+          <g>
+            <line class="grid" x1="44" y1="24" x2="404" y2="24"/>
+            <line class="grid" x1="44" y1="69" x2="404" y2="69"/>
+            <line class="grid" x1="44" y1="114" x2="404" y2="114"/>
+            <line class="grid" x1="44" y1="159" x2="404" y2="159"/>
+            <line class="grid" x1="44" y1="204" x2="404" y2="204"/>
+          </g>
+          <g text-anchor="end">
+            <text class="axis-t" x="38" y="28">100 %</text>
+            <text class="axis-t" x="38" y="73">75 %</text>
+            <text class="axis-t" x="38" y="118">50 %</text>
+            <text class="axis-t" x="38" y="163">25 %</text>
+            <text class="axis-t" x="38" y="208">0 %</text>
+          </g>
+          <g text-anchor="middle">
+            <text class="axis-t" x="44" y="222">0</text>
+            <text class="axis-t" x="164" y="222">5</text>
+            <text class="axis-t" x="284" y="222">10</text>
+            <text class="axis-t" x="404" y="222">15</text>
+            <text class="axis-t" x="224" y="244">Usuarios en la prueba</text>
+          </g>
+          <text class="axis-t" x="44" y="12">Problemas encontrados</text>
+          <polygon class="area" points="44,204 68,148.2 92,109.68 116,83.22 140,64.86 164,52.08 188,43.44 212,37.32 236,33.18 260,30.3 284,28.32 308,27.06 332,26.16 356,25.44 380,24.9 404,24.72 404,204"/>
+          <polyline class="line" points="44,204 68,148.2 92,109.68 116,83.22 140,64.86 164,52.08 188,43.44 212,37.32 236,33.18 260,30.3 284,28.32 308,27.06 332,26.16 356,25.44 380,24.9 404,24.72"/>
+          <line class="guide" x1="164" y1="204" x2="164" y2="56"/>
+          <circle class="dot" cx="164" cy="52.08" r="5"/>
+          <text class="lbl" x="174" y="80">5 usuarios ≈ 85 %</text>
+        </svg>
+        <figcaption id="chart-cap">Modelo de Nielsen y Landauer (1993), con un promedio de 31 % de los problemas detectados por cada usuario. Curva calculada como 1 − (1 − 0,31)<sup>n</sup>.</figcaption>
+      </figure>
+
+      <h3 id="s5-5"><span class="sn">5.5</span>Cuestionario SUS: calculadora</h3>
+      <p>La Escala de Usabilidad del Sistema (<abbr title="System Usability Scale">SUS</abbr>), creada por John Brooke (1996), es el cuestionario de satisfacción más usado. Tiene diez afirmaciones que el participante valora de 1 (totalmente en desacuerdo) a 5 (totalmente de acuerdo); las impares son positivas y las pares, negativas. El resultado va de 0 a 100. Bangor, Kortum y Miller (2008) confirmaron su fiabilidad con más de 2.000 cuestionarios, y el promedio de cientos de estudios ronda los 68 puntos (Sauro, 2011).</p>
+      <p class="note">Cálculo: a cada respuesta impar se le resta 1; a 5 se le resta cada respuesta par; se suman los diez valores y el total se multiplica por 2,5. La puntuación SUS no es un porcentaje.</p>
+      <div class="sus-wrap" data-noindex data-requires-js>
+        <form id="sus" class="sus" novalidate>
+          <p class="sus-scale" aria-hidden="true"><span>1 = Totalmente en desacuerdo</span><span>5 = Totalmente de acuerdo</span></p>
+          <!-- La escala 1–5 de cada afirmación la genera assets/js/features/sus-calculator.js -->
+          <fieldset class="sus-item"><legend><span class="qn">1</span>Creo que me gustaría usar este sitio con frecuencia.</legend><div class="likert" data-q="1"></div></fieldset>
+          <fieldset class="sus-item"><legend><span class="qn">2</span>Encontré el sitio innecesariamente complejo.</legend><div class="likert" data-q="2"></div></fieldset>
+          <fieldset class="sus-item"><legend><span class="qn">3</span>Pensé que el sitio era fácil de usar.</legend><div class="likert" data-q="3"></div></fieldset>
+          <fieldset class="sus-item"><legend><span class="qn">4</span>Creo que necesitaría el apoyo de una persona experta para poder usar este sitio.</legend><div class="likert" data-q="4"></div></fieldset>
+          <fieldset class="sus-item"><legend><span class="qn">5</span>Encontré que las distintas funciones del sitio estaban bien integradas.</legend><div class="likert" data-q="5"></div></fieldset>
+          <fieldset class="sus-item"><legend><span class="qn">6</span>Pensé que había demasiadas incoherencias en este sitio.</legend><div class="likert" data-q="6"></div></fieldset>
+          <fieldset class="sus-item"><legend><span class="qn">7</span>Imagino que la mayoría de las personas aprendería a usar este sitio muy rápido.</legend><div class="likert" data-q="7"></div></fieldset>
+          <fieldset class="sus-item"><legend><span class="qn">8</span>Encontré el sitio muy engorroso de usar.</legend><div class="likert" data-q="8"></div></fieldset>
+          <fieldset class="sus-item"><legend><span class="qn">9</span>Me sentí con mucha confianza al usar el sitio.</legend><div class="likert" data-q="9"></div></fieldset>
+          <fieldset class="sus-item"><legend><span class="qn">10</span>Necesité aprender muchas cosas antes de poder usar este sitio.</legend><div class="likert" data-q="10"></div></fieldset>
+        </form>
+        <div class="sus-result">
+          <p class="side-label">Puntuación SUS</p>
+          <p class="sus-score"><span id="sus-score">80</span><span class="of">/ 100</span></p>
+          <p id="sus-verdict" class="verdict" data-tone="ok" aria-live="polite">Por encima del promedio de 68</p>
+          <div class="gauge" id="sus-gauge" aria-hidden="true"><div class="gauge-fill"></div><div class="gauge-avg"><span>promedio 68</span></div></div>
+          <p class="gauge-scale" aria-hidden="true"><span>0</span><span>100</span></p>
+          <p class="note sus-note" id="sus-note">Ejemplo cargado: respuestas de un participante ficticio. Cámbialas para probar la calculadora.</p>
+          <div class="sus-actions">
+            <button type="button" id="sus-example" class="btn ghost">Cargar ejemplo</button>
+            <button type="button" id="sus-clear" class="btn ghost">Borrar respuestas</button>
+          </div>
+        </div>
+      </div>
+      <noscript><p class="note">La calculadora SUS necesita JavaScript.</p></noscript>
+
+      <h3 id="s5-6"><span class="sn">5.6</span>Herramientas útiles</h3>
+      <div class="table-wrap">
+        <table class="stack">
+          <thead><tr><th scope="col">Para qué</th><th scope="col">Herramientas</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Revisar accesibilidad automáticamente</th><td data-label="Herramientas"><a class="ext" href="https://wave.webaim.org/">WAVE</a>, <a class="ext" href="https://www.deque.com/axe/devtools/">axe DevTools</a>, <a class="ext" href="https://developer.chrome.com/docs/lighthouse/overview">Lighthouse</a> (incluido en Chrome), <a class="ext" href="https://www.tawdis.net/">TAW</a></td></tr>
+            <tr><th scope="row">Comprobar el contraste de color</th><td data-label="Herramientas"><a class="ext" href="https://webaim.org/resources/contrastchecker/">WebAIM Contrast Checker</a>, Colour Contrast Analyser</td></tr>
+            <tr><th scope="row">Probar con lector de pantalla</th><td data-label="Herramientas"><a class="ext" href="https://www.nvaccess.org/">NVDA</a> (Windows, gratuito), VoiceOver (macOS e iOS), TalkBack (Android)</td></tr>
+            <tr><th scope="row">Prototipar</th><td data-label="Herramientas"><a class="ext" href="https://www.figma.com/">Figma</a>, <a class="ext" href="https://penpot.app/">Penpot</a> (código abierto), Balsamiq, o papel y lápiz</td></tr>
+            <tr><th scope="row">Card sorting y tree testing</th><td data-label="Herramientas"><a class="ext" href="https://www.optimalworkshop.com/">Optimal Workshop</a></td></tr>
+            <tr><th scope="row">Pruebas remotas con usuarios</th><td data-label="Herramientas"><a class="ext" href="https://maze.co/">Maze</a>, UserTesting</td></tr>
+            <tr><th scope="row">Mapas de calor y grabación de sesiones</th><td data-label="Herramientas"><a class="ext" href="https://clarity.microsoft.com/">Microsoft Clarity</a> (gratuito), Hotjar</td></tr>
+            <tr><th scope="row">Analítica web</th><td data-label="Herramientas">Google Analytics, <a class="ext" href="https://matomo.org/">Matomo</a> (código abierto)</td></tr>
+            <tr><th scope="row">Aplicar cuestionarios como el SUS</th><td data-label="Herramientas">Google Forms, Microsoft Forms</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 6 ============ -->
+    <section class="chapter" id="s6" data-section data-spy data-label="§6 Diseño web centrado en el usuario" aria-labelledby="h-s6">
+      <p class="eyebrow">§6 · <span data-reading-time>Lectura: 7 min</span></p>
+      <h2 id="h-s6">Diseño web centrado en el usuario</h2>
+      <aside class="index-card ficha" aria-label="Ideas clave de la sección 6">
+        <p class="ficha-head"><span>Ideas clave</span><span>§6</span></p>
+        <ul>
+          <li>En el diseño centrado en el usuario (DCU), las necesidades, características y objetivos de los usuarios guían todas las decisiones, desde la planificación hasta el mantenimiento.</li>
+          <li>Es iterativo: se comprende el contexto, se especifican requisitos, se producen soluciones y se evalúan, hasta que cumplen los requisitos (ISO 9241-210).</li>
+          <li>Para la web, Hassan Montero, Martín Fernández e Iazza (2004) lo concretan en seis fases con técnicas como personas, card sorting, prototipos y pruebas con usuarios.</li>
+        </ul>
+      </aside>
+
+      <h3 id="s6-1"><span class="sn">6.1</span>Qué es el DCU</h3>
+      <p>La expresión <em>diseño centrado en el usuario</em> se difundió con el libro <cite>User Centered System Design</cite>, editado por Donald Norman y Stephen Draper (1986). Es a la vez una filosofía y un marco de trabajo: el proceso de diseño se guía por información sobre las personas que usarán el producto. Tramullas (2003) describe esta evolución como el paso de la usabilidad, entendida como evaluación, a un diseño de información guiado por el usuario desde el principio.</p>
+      <p>El DCU se diferencia de otros enfoques habituales:</p>
+      <ul>
+        <li><strong>Centrado en la tecnología:</strong> se diseña según lo que la herramienta permite hacer con facilidad.</li>
+        <li><strong>Centrado en el diseñador:</strong> se diseña según el gusto o la intuición del equipo.</li>
+        <li><strong>Centrado en la organización:</strong> el menú copia el organigrama de la institución (“Dirección”, “Subdirección de Servicios”, “Grupo de Procesos Técnicos”), aunque el usuario no sepa qué hace cada dependencia.</li>
+      </ul>
+      <p>Para Hassan Montero, Martín Fernández e Iazza (2004), el DCU es el camino para obtener sitios usables y accesibles: los usuarios participan desde el inicio, el sitio se prueba con ellos y el diseño se ajusta según sus reacciones. Hassan Montero y Martín Fernández (2004) adaptaron después esta metodología al desarrollo de sitios web accesibles.</p>
+
+      <h3 id="s6-2"><span class="sn">6.2</span>Principios según la norma ISO 9241-210</h3>
+      <p>La norma ISO 9241-210:2019, que reemplazó a la ISO 13407, establece seis principios del diseño centrado en las personas:</p>
+      <ul class="tiles">
+        <li><strong>Comprensión explícita</strong><p>El diseño parte de entender a los usuarios, sus tareas y sus entornos.</p></li>
+        <li><strong>Participación de los usuarios</strong><p>Los usuarios intervienen durante todo el diseño y el desarrollo.</p></li>
+        <li><strong>Evaluación centrada en el usuario</strong><p>Las evaluaciones con usuarios guían y refinan el diseño.</p></li>
+        <li><strong>Proceso iterativo</strong><p>Se diseña, se evalúa y se ajusta en ciclos sucesivos.</p></li>
+        <li><strong>Experiencia completa</strong><p>El diseño atiende toda la experiencia de uso, no solo la pantalla.</p></li>
+        <li><strong>Equipo multidisciplinar</strong><p>Participan personas con habilidades y perspectivas diversas.</p></li>
+      </ul>
+
+      <h3 id="s6-3"><span class="sn">6.3</span>El ciclo del DCU</h3>
+      <p>La norma describe cuatro actividades que se repiten hasta que la solución cumple los requisitos. Si una evaluación falla, el equipo vuelve a la actividad que corresponda: puede que haya que comprender mejor el contexto, ajustar un requisito o rediseñar.</p>
+      <figure class="diagram" aria-labelledby="iso-cap">
+        <p class="iso-start">Planificar el proceso de diseño centrado en el usuario</p>
+        <p class="iso-arrow" aria-hidden="true">↓</p>
+        <ol class="iso-cycle">
+          <li class="a1"><span class="n">1</span><span>Comprender y especificar el contexto de uso</span></li>
+          <li class="a2"><span class="n">2</span><span>Especificar los requisitos de usuario</span></li>
+          <li class="a3"><span class="n">3</span><span>Producir soluciones de diseño</span></li>
+          <li class="a4"><span class="n">4</span><span>Evaluar los diseños frente a los requisitos</span></li>
+        </ol>
+        <p class="iso-center">Si el diseño no cumple los requisitos, se vuelve a la actividad necesaria y se itera.</p>
+        <p class="iso-arrow" aria-hidden="true">↓</p>
+        <p class="iso-end">Solución que cumple los requisitos de usuario</p>
+        <figcaption id="iso-cap">Actividades del diseño centrado en el usuario según ISO 9241-210:2019. Elaboración propia.</figcaption>
+      </figure>
+
+      <h3 id="s6-4"><span class="sn">6.4</span>Fases del DCU aplicado a la web</h3>
+      <p>Hassan Montero, Martín Fernández e Iazza (2004) proponen un proceso concreto para sitios web:</p>
+      <ol class="timeline">
+        <li><strong>Planificación</strong><p>Se reúnen los objetivos del sitio y las necesidades de los usuarios y de la institución, y se definen los requisitos técnicos, humanos y de presupuesto.</p><span class="tech">Técnicas: entrevistas, encuestas, análisis de sitios similares.</span></li>
+        <li><strong>Diseño</strong><p>Se toman las decisiones de estructura, navegación, aspecto y contenidos a partir de lo aprendido.</p>
+          <ul>
+            <li><strong>Modelado del usuario:</strong> se agrupa a los usuarios en perfiles o personas construidos con datos reales.</li>
+            <li><strong>Diseño conceptual:</strong> se define la organización y la navegación del sitio, es decir, su arquitectura de la información, por ejemplo con card sorting.</li>
+            <li><strong>Diseño visual y definición del estilo:</strong> jerarquía visual, color, tipografía y accesibilidad, recogidos en una guía de estilo común.</li>
+            <li><strong>Diseño de contenidos:</strong> textos breves, fáciles de escanear y escritos con las palabras del usuario.</li>
+          </ul>
+        </li>
+        <li><strong>Prototipado</strong><p>Maquetas de baja o alta fidelidad, en papel o con software, para probar la usabilidad antes de programar.</p></li>
+        <li><strong>Evaluación</strong><p>Primero, evaluación heurística con expertos; después, pruebas con usuarios reales, preferiblemente de bajo costo.</p></li>
+        <li><strong>Implementación y lanzamiento</strong><p>Desarrollo con estándares web, separación entre contenido y presentación, control de calidad y un lanzamiento planificado.</p></li>
+        <li><strong>Mantenimiento y seguimiento</strong><p>Cambios graduales a partir de las opiniones de los usuarios y del análisis de su comportamiento en los registros de uso.</p></li>
+      </ol>
+
+      <h3 id="s6-5"><span class="sn">6.5</span>Técnicas del DCU</h3>
+      <ul class="tiles">
+        <li><strong>Personas</strong><p>Personajes ficticios, basados en datos reales, que representan a un grupo de usuarios con sus objetivos, contexto y frustraciones. Ayudan a decidir pensando en alguien concreto (Cooper, 1999).</p></li>
+        <li><strong>Escenarios</strong><p>Relatos breves de cómo una persona usa el sitio para lograr un objetivo. Sirven para diseñar y, después, como tareas de prueba.</p></li>
+        <li><strong>Card sorting</strong><p>Los usuarios agrupan tarjetas con los contenidos y nombran los grupos. Es abierto si crean las categorías y cerrado si usan categorías dadas.</p></li>
+        <li><strong>Mapa del sitio</strong><p>Representa la jerarquía de páginas y cómo se pasa de una a otra.</p></li>
+        <li><strong>Wireframes</strong><p>Esquemas de cada tipo de página, sin diseño visual: qué elementos hay y dónde van.</p></li>
+        <li><strong>Prototipos</strong><p>Versiones navegables, en papel o digitales, para probar antes de construir.</p></li>
+        <li><strong>Diseño participativo</strong><p>Usuarios y equipo diseñan juntos en talleres.</p></li>
+        <li><strong>Pruebas con usuarios</strong><p>Personas reales realizan tareas con el prototipo o el sitio (sección 5.4).</p></li>
+      </ul>
+
+      <h3 id="s6-6"><span class="sn">6.6</span>Escribir para la web</h3>
+      <p>El diseño de contenidos merece atención especial. En un estudio clásico, Nielsen (1997) encontró que el 79 % de los participantes escaneaba las páginas nuevas y solo el 16 % las leía palabra por palabra. Nielsen y Loranger (2006) mantienen recomendaciones en la misma línea:</p>
+      <ul class="check">
+        <li>Empezar por la conclusión (pirámide invertida).</li>
+        <li>Una idea por párrafo, y párrafos cortos.</li>
+        <li>Encabezados y enlaces que digan exactamente qué hay detrás.</li>
+        <li>Listas para los pasos y las enumeraciones.</li>
+        <li>Destacar en negrita solo las palabras clave.</li>
+        <li>Usar el vocabulario de los usuarios, no el de la institución.</li>
+        <li>Escribir bastante menos texto del que se escribiría para papel.</li>
+      </ul>
+    </section>
+
+    <!-- ============ 7 ============ -->
+    <section class="chapter" id="s7" data-section data-spy data-noreadtime data-label="§7 Referencias bibliográficas" aria-labelledby="h-s7">
+      <p class="eyebrow">§7 · 38 referencias · Formato APA, 7.ª edición</p>
+      <h2 id="h-s7">Referencias bibliográficas</h2>
+      <p>Cada referencia tiene un botón para copiarla y pegarla en tus trabajos.</p>
+      <ol class="refs" id="refs">
+        <li><p class="ref-text" data-ref-text>Baeza-Yates, R., Rivera Loaiza, C., y Velasco Martín, J. (2004). Arquitectura de la información y usabilidad en la web. <i>El Profesional de la Información, 13</i>(3), 168–178.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Baeza-Yates et al., 2004"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Bangor, A., Kortum, P. T., y Miller, J. T. (2008). An empirical evaluation of the System Usability Scale. <i>International Journal of Human-Computer Interaction, 24</i>(6), 574–594. https://doi.org/10.1080/10447310802205776</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Bangor et al., 2008"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Brooke, J. (1996). SUS: A “quick and dirty” usability scale. En P. W. Jordan, B. Thomas, B. A. Weerdmeester y I. L. McClelland (Eds.), <i>Usability evaluation in industry</i> (pp. 189–194). Taylor &amp; Francis.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Brooke, 1996"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Congreso de la República de Colombia. (2013). <i>Ley Estatutaria 1618 de 2013, por medio de la cual se establecen las disposiciones para garantizar el pleno ejercicio de los derechos de las personas con discapacidad</i>.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Ley 1618 de 2013"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Congreso de la República de Colombia. (2014). <i>Ley 1712 de 2014, por medio de la cual se crea la Ley de Transparencia y del Derecho de Acceso a la Información Pública Nacional y se dictan otras disposiciones</i>.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Ley 1712 de 2014"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Cooper, A. (1999). <i>The inmates are running the asylum: Why high-tech products drive us crazy and how to restore the sanity</i>. Sams.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Cooper, 1999"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Gould, J. D., y Lewis, C. (1985). Designing for usability: Key principles and what designers think. <i>Communications of the ACM, 28</i>(3), 300–311. https://doi.org/10.1145/3166.3170</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Gould y Lewis, 1985"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Granollers, T. (2004). <i>MPIu+a. Una metodología que integra la ingeniería del software, la interacción persona-ordenador y la accesibilidad en el contexto de equipos de desarrollo multidisciplinares</i> [Tesis doctoral, Universitat de Lleida].</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Granollers, 2004"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Hassan Montero, Y. (2006). Factores de diseño web orientado a la satisfacción y no-frustración de uso. <i>Revista Española de Documentación Científica, 29</i>(2), 239–257.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Hassan Montero, 2006"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Hassan Montero, Y., y Martín Fernández, F. J. (2003). <i>Guía de evaluación heurística de sitios web</i>. No Solo Usabilidad. http://www.nosolousabilidad.com/articulos/heuristica.htm</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Hassan Montero y Martín Fernández, 2003"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Hassan Montero, Y., y Martín Fernández, F. J. (2004). Propuesta de adaptación de la metodología de diseño centrado en el usuario para el desarrollo de sitios web accesibles. <i>Revista Española de Documentación Científica, 27</i>(3).</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Hassan Montero y Martín Fernández, 2004"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Hassan Montero, Y., Martín Fernández, F. J., e Iazza, G. (2004). Diseño web centrado en el usuario: usabilidad y arquitectura de la información. <i>Hipertext.net</i>, (2). https://eprints.rclis.org/8998/</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Hassan Montero, Martín Fernández e Iazza, 2004"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Hassan Montero, Y., y Ortega Santamaría, S. (2009). <i>Informe APEI sobre usabilidad</i>. Asociación Profesional de Especialistas en Información. https://core.ac.uk/download/214315168.pdf</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Hassan Montero y Ortega Santamaría, 2009"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Instituto Colombiano de Normas Técnicas y Certificación [ICONTEC]. (2011). <i>Accesibilidad a páginas web</i> (NTC 5854).</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: ICONTEC, 2011"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>International Organization for Standardization. (2018). <i>Ergonomics of human-system interaction. Part 11: Usability: Definitions and concepts</i> (ISO 9241-11:2018).</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: ISO 9241-11, 2018"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>International Organization for Standardization. (2019). <i>Ergonomics of human-system interaction. Part 210: Human-centred design for interactive systems</i> (ISO 9241-210:2019).</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: ISO 9241-210, 2019"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Krug, S. (2014). <i>Don’t make me think, revisited: A common sense approach to web usability</i> (3.ª ed.). New Riders.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Krug, 2014"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Kurosu, M., y Kashimura, K. (1995). Apparent usability vs. inherent usability: Experimental analysis on the determinants of the apparent usability. En <i>Conference Companion on Human Factors in Computing Systems (CHI ’95)</i> (pp. 292–293). ACM.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Kurosu y Kashimura, 1995"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Mayhew, D. J. (1999). <i>The usability engineering lifecycle: A practitioner’s handbook for user interface design</i>. Morgan Kaufmann.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Mayhew, 1999"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Ministerio de Tecnologías de la Información y las Comunicaciones. (2020). <i>Resolución 1519 de 2020. Anexo 1: Directrices de accesibilidad web</i>. https://gobiernodigital.mintic.gov.co/692/articles-160770_Directrices_Accesibilidad_web.pdf</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: MinTIC, 2020"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Morville, P. (2005). <i>Ambient findability</i>. O’Reilly Media.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Morville, 2005"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J. (1993). <i>Usability engineering</i>. Academic Press.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen, 1993"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J. (1994a). <i>10 usability heuristics for user interface design</i>. Nielsen Norman Group. https://www.nngroup.com/articles/ten-usability-heuristics/</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen, 1994a"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J. (1994b). Guerrilla HCI: Using discount usability engineering to penetrate the intimidation barrier. En R. G. Bias y D. J. Mayhew (Eds.), <i>Cost-justifying usability</i> (pp. 245–272). Academic Press.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen, 1994b"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J. (1997). <i>How users read on the web</i>. Nielsen Norman Group. https://www.nngroup.com/articles/how-users-read-on-the-web/</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen, 1997"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J. (2000a). <i>Usabilidad: diseño de sitios web</i>. Pearson Educación.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen, 2000a"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J. (2000b). <i>Why you only need to test with 5 users</i>. Nielsen Norman Group. https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen, 2000b"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J. (2012). <i>Usability 101: Introduction to usability</i>. Nielsen Norman Group. https://www.nngroup.com/articles/usability-101-introduction-to-usability/</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen, 2012"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J., y Landauer, T. K. (1993). A mathematical model of the finding of usability problems. En <i>Proceedings of the INTERACT ’93 and CHI ’93 Conference on Human Factors in Computing Systems</i> (pp. 206–213). ACM.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen y Landauer, 1993"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J., y Loranger, H. (2006). <i>Usabilidad: prioridad en el diseño web</i>. Anaya Multimedia.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen y Loranger, 2006"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Nielsen, J., y Molich, R. (1990). Heuristic evaluation of user interfaces. En <i>Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’90)</i> (pp. 249–256). ACM. https://doi.org/10.1145/97243.97281</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Nielsen y Molich, 1990"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Norman, D. A., y Draper, S. W. (Eds.). (1986). <i>User centered system design: New perspectives on human-computer interaction</i>. Lawrence Erlbaum Associates.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Norman y Draper, 1986"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Rosenfeld, L., Morville, P., y Arango, J. (2015). <i>Information architecture: For the web and beyond</i> (4.ª ed.). O’Reilly Media.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Rosenfeld, Morville y Arango, 2015"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Sauro, J. (2011). <i>A practical guide to the System Usability Scale: Background, benchmarks &amp; best practices</i>. Measuring Usability LLC.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Sauro, 2011"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Tramullas, J. (2003). Diseño de información: de la usabilidad al diseño centrado en el usuario. <i>El Profesional de la Información, 12</i>(2), 107–110.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Tramullas, 2003"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>W3C Web Accessibility Initiative. (s. f.). <i>Introduction to web accessibility</i>. https://www.w3.org/WAI/fundamentals/accessibility-intro/</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: W3C WAI, s. f."><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>Whiteside, J., Bennett, J., y Holtzblatt, K. (1988). Usability engineering: Our experience and evolution. En M. Helander (Ed.), <i>Handbook of human-computer interaction</i>. North-Holland.</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: Whiteside et al., 1988"><span class="t">Copiar</span></button></li>
+        <li><p class="ref-text" data-ref-text>World Wide Web Consortium. (2023). <i>Web Content Accessibility Guidelines (WCAG) 2.2</i>. W3C Recommendation. https://www.w3.org/TR/WCAG22/</p><button class="copy-ref" type="button" data-copy-ref data-requires-js aria-label="Copiar referencia: W3C, 2023"><span class="t">Copiar</span></button></li>
+      </ol>
+    </section>
+
+    <!-- ============ Anexo ============ -->
+    <section class="chapter" id="anexo" data-section data-spy data-label="Anexo A · Cómo se aplicó en este sitio" aria-labelledby="h-anexo">
+      <p class="eyebrow">Anexo A · <span data-reading-time>Lectura: 4 min</span></p>
+      <h2 id="h-anexo">Cómo aplica este sitio lo que describe</h2>
+      <p>La consigna pedía tener en cuenta en el diseño las características de usabilidad descritas. Este anexo muestra cómo se hizo, siguiendo el mismo proceso de diseño centrado en el usuario de la sección 6.</p>
+
+      <h3 id="a-1"><span class="sn">A.1</span>Persona para la que se diseñó</h3>
+      <div class="persona">
+        <div class="avatar" aria-hidden="true">V</div>
+        <div>
+          <h4>Valentina, 21 años</h4>
+          <p class="tag">PERSONA FICTICIA, CONSTRUIDA COMO EJEMPLO</p>
+          <dl>
+            <dt>Quién es</dt><dd>Estudiante de sexto semestre de Ciencia de la Información y Bibliotecología.</dd>
+            <dt>Contexto</dt><dd>Lee en el celular durante sus trayectos y en los computadores de la biblioteca de su universidad.</dd>
+            <dt>Objetivos</dt><dd>Entender los conceptos para el parcial, encontrar rápido una definición y citar bien las fuentes en sus trabajos.</dd>
+            <dt>Frustraciones</dt><dd>Textos largos sin estructura, sitios que no se leen bien en el celular y referencias incompletas.</dd>
+            <dt>Cómo responde el sitio</dt><dd>Fichas de ideas clave al inicio de cada sección, buscador interno, referencias en APA con botón para copiar y diseño adaptable a cualquier pantalla.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <h3 id="a-2"><span class="sn">A.2</span>Las diez heurísticas, aplicadas</h3>
+      <div class="table-wrap">
+        <table class="stack">
+          <thead><tr><th scope="col">Heurística</th><th scope="col">En este sitio</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">1. Visibilidad del estado del sistema</th><td data-label="En este sitio">Barra de progreso de lectura bajo la cabecera, indicador “Estás en” con la sección actual, sección resaltada en el índice y tiempo de lectura de cada sección.</td></tr>
+            <tr><th scope="row">2. Relación con el mundo real</th><td data-label="En este sitio">Vocabulario del área y metáforas de biblioteca: la ficha catalográfica de la portada y las fichas de ideas clave de cada sección.</td></tr>
+            <tr><th scope="row">3. Control y libertad</th><td data-label="En este sitio">Índice siempre disponible, botón para volver arriba, la tecla Esc cierra el índice en pantallas pequeñas, y el lector elige el tema y el tamaño de letra.</td></tr>
+            <tr><th scope="row">4. Consistencia y estándares</th><td data-label="En este sitio">Todas las secciones tienen la misma estructura: número, tiempo de lectura, ideas clave y subsecciones numeradas. Los enlaces van subrayados y los controles están en lugares convencionales.</td></tr>
+            <tr><th scope="row">5. Prevención de errores</th><td data-label="En este sitio">El buscador ignora tildes y mayúsculas, y la calculadora SUS indica cuántas respuestas faltan antes de dar un resultado.</td></tr>
+            <tr><th scope="row">6. Reconocer antes que recordar</th><td data-label="En este sitio">El índice permanece visible en pantallas anchas y cada resultado de búsqueda indica en qué sección está.</td></tr>
+            <tr><th scope="row">7. Flexibilidad y eficiencia</th><td data-label="En este sitio">Atajo de teclado <kbd>/</kbd> para buscar, filtros en el catálogo de métodos y referencias que se copian con un clic.</td></tr>
+            <tr><th scope="row">8. Diseño estético y minimalista</th><td data-label="En este sitio">Una sola columna de lectura de unos 70 caracteres, una tipografía de texto muy legible y un único color de acento.</td></tr>
+            <tr><th scope="row">9. Recuperarse de errores</th><td data-label="En este sitio">Si una búsqueda no da resultados, el sitio lo dice y propone términos para probar.</td></tr>
+            <tr><th scope="row">10. Ayuda y documentación</th><td data-label="En este sitio">Apartado “Cómo usar este sitio” en el índice, con las funciones y los atajos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="a-3"><span class="sn">A.3</span>Accesibilidad (WCAG 2.2)</h3>
+      <ul class="check">
+        <li>Enlace “Saltar al contenido” como primer elemento, para quien navega con teclado o lector de pantalla.</li>
+        <li>Estructura con regiones (cabecera, navegación, contenido principal y pie) y encabezados jerárquicos.</li>
+        <li>Contraste de texto de al menos 4,5:1 en el tema claro y en el oscuro.</li>
+        <li>Foco del teclado siempre visible, con un contorno de 3 píxeles.</li>
+        <li>Tipografía Atkinson Hyperlegible, creada por el Braille Institute para lectores con baja visión.</li>
+        <li>Tamaño de letra ajustable y diseño que se adapta a pantallas estrechas sin desplazamiento horizontal.</li>
+        <li>Respeto a la preferencia del sistema de reducir el movimiento.</li>
+        <li>Idioma de la página declarado en español; botones y controles con nombres accesibles.</li>
+        <li>Controles principales de al menos 44 × 44 píxeles, por encima del mínimo de 24 × 24 que fija WCAG 2.2.</li>
+        <li>Diagramas construidos con texto real, legibles por lectores de pantalla, y gráfico con descripción alternativa.</li>
+      </ul>
+      <p>Puedes comprobarlo con las herramientas de la sección 5.6, por ejemplo con WAVE o con Lighthouse.</p>
+    </section>
+  </main>
+</div>
+
+<footer class="site-footer" id="site-footer">
+  <div class="inner">
+    <p>Andres Camilo Matuk · Arquitectura de Información y Usabilidad · Docente: Hernán Darío Cruz Bueno · Parte 1 · Actualizado el 8 de noviembre de 2026</p>
+    <p><a href="#inicio">Volver al inicio</a> · <a href="#s7">Referencias</a></p>
+  </div>
+</footer>
+
+<button id="to-top" class="icon-btn to-top" type="button" hidden>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg>
+  <span>Arriba</span>
+</button>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

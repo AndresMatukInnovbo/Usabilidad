@@ -1,0 +1,26 @@
+/* ==========================================================================
+   Pie de página
+   ========================================================================== */
+
+.site-footer {
+  border-top: 1px solid var(--rule);
+  background: var(--surface);
+}
+
+.site-footer .inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding-block: 1.75rem calc(1.75rem + var(--safe-bottom));
+  padding-left: var(--gutter-left);
+  padding-right: var(--gutter-right);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: .875rem;
+  color: var(--ink-2);
+}
+
+.site-footer p {
+  margin: 0;
+}

@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Tablas de contenido
+   .toc        → índice del panel lateral, con la sección actual resaltada
+                 (aria-current="location", lo pone reading-progress.js).
+   .toc-inline → índice dentro del contenido, solo en pantallas estrechas.
+   ========================================================================== */
+
+/* --- Índice lateral --- */
+.toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+}
+
+.toc a {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr;
+  gap: .35rem;
+  align-items: baseline;
+  padding: .5rem .6rem;
+  border-radius: var(--radius);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: .9375rem;
+  line-height: 1.35;
+  border-left: 3px solid transparent;
+}
+
+.toc a:hover {
+  background: var(--surface-2);
+}
+
+.toc a .n {
+  font-family: var(--f-type);
+  font-weight: 700;
+  color: var(--ink-2);
+  font-size: .8125rem;
+}
+
+.toc a[aria-current="location"] {
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+  font-weight: 700;
+}
+
+.toc a[aria-current="location"] .n {
+  color: var(--accent);
+}
+
+/* --- Índice en el contenido --- */
+.toc-inline {
+  display: none;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 1rem 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
+.toc-inline ol {
+  margin: 0;
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.toc-inline li::marker {
+  font-family: var(--f-type);
+  color: var(--ink-2);
+}
+
+.toc-inline li.is-annex {
+  list-style-type: "A. ";
+}
+
+@media (max-width: 68rem) {
+  .toc-inline {
+    display: block;
+  }
+}

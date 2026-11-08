@@ -1,0 +1,19 @@
+/* ==========================================================================
+   Lista de definiciones (término + explicación con filete lateral)
+   ========================================================================== */
+
+.defs {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+
+.defs dt {
+  font-weight: 700;
+}
+
+.defs dd {
+  margin: .15rem 0 0;
+  padding-left: .9rem;
+  border-left: 2px solid var(--rule);
+}

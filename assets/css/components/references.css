@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Referencias bibliográficas (APA) con botón para copiar
+   Sangría francesa en el texto; el botón se reduce a icono en pantallas estrechas.
+   ========================================================================== */
+
+.refs {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  max-width: none;
+}
+
+.refs li {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .75rem;
+  align-items: start;
+  padding: .65rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.ref-text {
+  padding-left: 2rem;
+  text-indent: -2rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.copy-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: var(--tap);
+  padding: 0 .7rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink-2);
+  font: inherit;
+  font-size: .8125rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.copy-ref:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@container main (max-width: 34rem) {
+  .copy-ref {
+    padding: 0;
+    width: var(--tap);
+    justify-content: center;
+  }
+
+  .copy-ref .t {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+}

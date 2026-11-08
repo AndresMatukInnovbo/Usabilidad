@@ -1,0 +1,289 @@
+/* ==========================================================================
+   Diagramas construidos con HTML (texto real, legible por lectores de pantalla)
+   .diagram     → marco común; es contenedor de consulta (container query)
+   .phases      → modelo de Mayhew: 3 fases en fila con flechas
+   .levels      → niveles de la fase 2 de Mayhew
+   .iso-cycle   → ciclo de 4 actividades de ISO 9241-210
+   ========================================================================== */
+
+.diagram {
+  container-type: inline-size;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+/* Pie compartido por diagramas y gráficos */
+.diagram figcaption,
+.chart figcaption {
+  font-size: .875rem;
+  color: var(--ink-2);
+  margin-top: 1rem;
+  line-height: 1.45;
+}
+
+/* --- Modelo de Mayhew --- */
+.phase-k {
+  font-family: var(--f-type);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 .2rem;
+}
+
+.phases {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 2.25rem;
+}
+
+.phases > li {
+  margin: 0;
+  position: relative;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: .9rem 1rem;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+}
+
+.phases > li:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -1.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.tasks {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: .9063rem;
+  line-height: 1.4;
+}
+
+.tasks li + li {
+  margin-top: .25rem;
+}
+
+/* Resultado de la fase */
+.out {
+  margin: auto 0 0;
+  padding-top: .5rem;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--f-type);
+  font-size: .8125rem;
+  color: var(--ink-2);
+}
+
+.levels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+}
+
+.levels li {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: .55rem .7rem;
+  font-size: .875rem;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.levels strong {
+  font-size: .9063rem;
+}
+
+.loop {
+  font-family: var(--f-type);
+  font-size: .75rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+@container (max-width: 40rem) {
+  .phases {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.4rem;
+  }
+
+  .phases > li:not(:last-child)::after {
+    content: "↓";
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: -2rem;
+    transform: translateX(-50%);
+  }
+}
+
+/* --- Ciclo ISO 9241-210 --- */
+.iso-start,
+.iso-end {
+  margin: 0 auto;
+  max-width: 28rem;
+  text-align: center;
+  font-size: .9063rem;
+  font-weight: 700;
+  padding: .55rem .8rem;
+  border-radius: var(--radius-pill);
+  border: 1px dashed var(--ink-2);
+}
+
+.iso-end {
+  border-style: solid;
+  border-color: var(--ok);
+  color: var(--ok);
+  background: var(--ok-soft);
+}
+
+.iso-arrow {
+  text-align: center;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 1;
+  margin: .5rem 0;
+}
+
+.iso-cycle {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 36rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.6rem 3.2rem;
+  position: relative;
+}
+
+.iso-cycle > li {
+  margin: 0;
+  position: relative;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: .75rem .85rem;
+  font-size: .9375rem;
+  line-height: 1.35;
+  font-weight: 700;
+  display: flex;
+  gap: .55rem;
+  align-items: flex-start;
+}
+
+.iso-cycle .n {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--f-type);
+  font-size: .8125rem;
+}
+
+/* Recorrido en sentido horario: 1 → 2 ↓ 3 ← 4 ↑ */
+.iso-cycle .a3 {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.iso-cycle .a4 {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.iso-cycle > li::after {
+  position: absolute;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.iso-cycle .a1::after {
+  content: "→";
+  right: -2.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.iso-cycle .a2::after {
+  content: "↓";
+  left: 50%;
+  bottom: -2.05rem;
+  transform: translateX(-50%);
+}
+
+.iso-cycle .a3::after {
+  content: "←";
+  left: -2.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.iso-cycle .a4::after {
+  content: "↑";
+  left: 50%;
+  top: -2.05rem;
+  transform: translateX(-50%);
+}
+
+.iso-center {
+  text-align: center;
+  margin: 1rem auto 0;
+  max-width: 30rem;
+  font-size: .875rem;
+  color: var(--ink-2);
+}
+
+@container (max-width: 30rem) {
+  .iso-cycle {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.2rem;
+  }
+
+  .iso-cycle .a3,
+  .iso-cycle .a4 {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .iso-cycle .a1::after,
+  .iso-cycle .a2::after,
+  .iso-cycle .a3::after {
+    content: "↓";
+    left: 50%;
+    right: auto;
+    top: auto;
+    bottom: -1.85rem;
+    transform: translateX(-50%);
+  }
+
+  .iso-cycle .a4::after {
+    content: none;
+  }
+}

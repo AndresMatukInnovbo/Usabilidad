@@ -1,0 +1,124 @@
+/* ==========================================================================
+   Tablas
+   .table-wrap → contenedor con scroll horizontal si hace falta
+   .stack      → en contenedores estrechos cada fila se apila como tarjeta;
+                 cada celda muestra su encabezado desde data-label
+   .wide       → tabla que conserva sus columnas (scroll en vez de apilar)
+   .pill       → etiqueta de categoría dentro de una celda
+   ========================================================================== */
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: .9375rem;
+  line-height: 1.45;
+}
+
+caption {
+  caption-side: top;
+  text-align: left;
+  padding: .7rem .85rem;
+  font-size: .875rem;
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--rule);
+}
+
+th,
+td {
+  padding: .6rem .85rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+}
+
+tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+thead th {
+  background: var(--surface-2);
+  font-weight: 700;
+  font-size: .875rem;
+  white-space: nowrap;
+}
+
+tbody th {
+  font-weight: 700;
+}
+
+td.num,
+th.num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.wide {
+  min-width: 38rem;
+}
+
+.pill {
+  display: inline-block;
+  padding: .1rem .45rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--f-type);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* --- Tabla apilable --- */
+@container main (max-width: 40rem) {
+  .stack thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .stack,
+  .stack tbody,
+  .stack tr,
+  .stack td,
+  .stack th {
+    display: block;
+    width: auto;
+  }
+
+  .stack tr {
+    padding: .75rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .stack tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .stack td,
+  .stack tbody th {
+    border: 0;
+    padding: .15rem .85rem;
+  }
+
+  .stack td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-family: var(--f-type);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+}

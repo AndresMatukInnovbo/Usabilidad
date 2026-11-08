@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Tarjeta de persona (técnica del DCU)
+   ========================================================================== */
+
+.persona {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+
+.persona h4 {
+  font-size: 1.1rem;
+}
+
+.persona .tag {
+  margin: .1rem 0 .6rem;
+  font-family: var(--f-type);
+  font-size: .75rem;
+  letter-spacing: .04em;
+  color: var(--ink-2);
+}
+
+.persona dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: .45rem .8rem;
+  font-size: .9375rem;
+  line-height: 1.45;
+}
+
+.persona dt {
+  font-weight: 700;
+}
+
+.persona dd {
+  margin: 0;
+}
+
+@container main (max-width: 36rem) {
+  .persona,
+  .persona dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .persona dd {
+    margin-bottom: .4rem;
+  }
+}

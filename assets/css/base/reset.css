@@ -1,0 +1,46 @@
+/* ==========================================================================
+   Reset
+   Capa más baja. Los !important de aquí ganan a cualquier capa posterior,
+   por eso solo se usan para garantías de accesibilidad.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+}
+
+html {
+  scroll-padding-top: var(--safe-top);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* El atributo hidden siempre oculta, aunque un componente defina display */
+[hidden]:not([hidden="until-found" i]) {
+  display: none !important;
+}
+
+/* Respeta la preferencia del sistema de reducir el movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

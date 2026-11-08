@@ -1,0 +1,21 @@
+/* ==========================================================================
+   Enlace "Saltar al contenido"
+   Oculto fuera de pantalla hasta que recibe el foco del teclado.
+   ========================================================================== */
+
+.skip {
+  position: absolute;
+  left: var(--gutter-left);
+  top: calc(var(--safe-top) + .5rem);
+  z-index: 100;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: .6rem 1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+
+.skip:focus {
+  transform: none;
+}
